@@ -23,7 +23,8 @@ class UserDB extends PgDataBase{
      */
     public function getUsers(){  
         $data = array();
-        $query = "SELECT IdUser, UserName, UserPassword FROM User_System;";
+        $query = "SELECT IdUser, UserName, UserPassword, Fk_UserRoll "
+                . "FROM User_System;";
         $users = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
        
         while ($line = pg_fetch_array($users, null, PGSQL_ASSOC)) {
@@ -31,6 +32,48 @@ class UserDB extends PgDataBase{
         }
      
         return $data; 
+    }
+    
+    /**
+     * obtiene un solo registro dado su ID
+     * @param int $id identificador unico de registro
+     * @return Array array con los registros obtenidos de la base de datos
+     */
+    public function getUserById($id=0){   
+        
+        $data = array();
+        $query = "SELECT IdUser, UserName, UserPassword, Fk_UserRoll "
+                . "FROM User_System "
+                . "WHERE IdUser=".$id;
+        $user = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+        while ($line = pg_fetch_array($user, null, PGSQL_ASSOC)) {
+            $data[] = $line;
+        }
+     
+        return $data;              
+    }
+    
+    /**
+     * obtiene un solo registro dado el nombre de usuario y contraseña
+     * @param String $userName nombre de usuario del registro
+     * @param String $userPassword contraseña de usuario
+     * @return Array array con los registros obtenidos de la base de datos
+     */
+    public function getUserByLogin ($userName="", $userPassword=""){
+        
+        $data = array();
+        $query = "  SELECT IdUser, UserName, UserPassword, Fk_UserRoll 
+                    FROM user_system 
+                    WHERE UserName = '".$userName."'".
+                        " AND UserPassword= '".$userPassword."';";
+        $user = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+        while ($line = pg_fetch_array($user, null, PGSQL_ASSOC)) {
+            $data[] = $line;
+        }
+        
+        return $data;
     }
 
 }

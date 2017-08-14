@@ -46,15 +46,19 @@ class UserApi {
        if ($_GET['action'] == 'users'){
            $db = new UserDB();
            if(isset($_GET['id'])){
-               $response = $db->getUsers($_GET['id']);
+               $response = $db->getUserById($_GET['id']);
                echo json_encode($response,JSON_PRETTY_PRINT);
-           }else{
+           }elseif (isset($_GET['userName']) && isset($_GET['userPassword'])) {
+                $response = $db->getUserByLogin($_GET['userName'],$_GET['userPassword']);
+                echo json_encode($response,JSON_PRETTY_PRINT);
+            }else{
                $response = $db->getUsers();
                echo json_encode($response,JSON_PRETTY_PRINT);
            }
        }else{
            $this->response(400);
        }
+       
     }
     
     /**
