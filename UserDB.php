@@ -63,10 +63,19 @@ class UserDB extends PgDataBase{
     public function getUserByLogin ($userName="", $userPassword=""){
         
         $data = array();
-        $query = "  SELECT IdUser, UserName, UserPassword, Fk_UserRoll 
+        /*$query = "  SELECT IdUser, UserName, UserPassword, Fk_UserRoll 
                     FROM user_system 
                     WHERE UserName = '".$userName."'".
-                        " AND UserPassword= '".$userPassword."';";
+                        " AND UserPassword= '".$userPassword."';";*/
+        
+        $query = "  SELECT usy.iduser,usy.username,". 
+                            " usy.userpassword, usy.fk_userroll,". 
+                            " usr.idroll, usr.rollname, usr.rolldescription".
+                    " FROM user_system usy, user_roll usr".
+                    " WHERE usy.fk_userroll = usr.idroll".
+                              " AND usy.username = '".$userName."'".
+                              " AND usy.userpassword = '".$userPassword."'";
+        
         $user = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
         
         while ($line = pg_fetch_array($user, null, PGSQL_ASSOC)) {
