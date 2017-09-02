@@ -19,7 +19,8 @@ class PatientApi {
         $method = $_SERVER['REQUEST_METHOD'];
         switch ($method) {
         case 'GET'://consulta
-            echo 'get';
+            //echo 'get';
+            $this->getPatients();
             break;     
         case 'POST'://inserta
             echo'post';
