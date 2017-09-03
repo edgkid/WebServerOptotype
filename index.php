@@ -4,4 +4,3 @@
     $userApi = new UserApi();
     $userApi->API();
     
-?>
