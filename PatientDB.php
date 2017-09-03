@@ -23,9 +23,11 @@ class PatientDB extends PgDataBase {
      */
     public function getPatientsForToday (){
         $data = array();
-        $query = "  SELECT pat.idPatient, pat.firstName, pat.middleName, pat.lastName, pat.maidenName,".
-               "    (extract(year from  current_timestamp) - extract(year from pat.birthDay)),".
-               "    pat.fk_userSystem".
+        $query = "  SELECT pat.idPatient as idPatient, pat.firstName as firstName, ".
+               "           pat.middleName as middleName, pat.lastName as lastName,".
+               "           pat.maidenName as maidenName ,".
+               "    (extract(year from  current_timestamp) - extract(year from pat.birthDay)) as yearsOld,".
+               "    pat.fk_userSystem as fkUSer".
                "  FROM Patient pat, Medical_Appointment mea".
                "  WHERE pat.idPatient = mea.fk_patient".
                "        AND to_char(mea.appointmentdate, 'dd/mm/yyyy')= to_char((Current_Timestamp :: date), 'dd/mm/yyyy')";
