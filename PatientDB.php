@@ -27,9 +27,9 @@ class PatientDB extends PgDataBase {
                "           pat.middleName as middleName, pat.lastName as lastName,".
                "           pat.maidenName as maidenName ,".
                "    (extract(year from  current_timestamp) - extract(year from pat.birthDay)) as yearsOld,".
-               "    pat.fk_userSystem as fkUSer".
+               "    pat.fk_idUser as fkUSer".
                "  FROM Patient pat, Medical_Appointment mea".
-               "  WHERE pat.idPatient = mea.fk_patient".
+               "  WHERE pat.idPatient = mea.fk_idPatient".
                "        AND to_char(mea.appointmentdate, 'dd/mm/yyyy')= to_char((Current_Timestamp :: date), 'dd/mm/yyyy')";
         
         $patient = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
