@@ -72,7 +72,7 @@ class UserDB extends PgDataBase{
                             " usy.userpassword, usy.fk_idRoll,". 
                             " usr.idroll, usr.rollname, usr.rolldescription".
                     " FROM user_system usy, user_roll usr".
-                    " WHERE usy.fk_userroll = usr.idroll".
+                    " WHERE usy.fk_idroll = usr.idroll".
                               " AND usy.username = '".$userName."'".
                               " AND usy.userpassword = '".$userPassword."'";
         
