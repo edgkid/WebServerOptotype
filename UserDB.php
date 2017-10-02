@@ -23,7 +23,7 @@ class UserDB extends PgDataBase{
      */
     public function getUsers(){  
         $data = array();
-        $query = "SELECT IdUser, UserName, UserPassword, Fk_UserRoll "
+        $query = "SELECT IdUser, UserName, UserPassword, Fk_idRoll "
                 . "FROM User_System;";
         $users = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
        
@@ -42,7 +42,7 @@ class UserDB extends PgDataBase{
     public function getUserById($id=0){   
         
         $data = array();
-        $query = "SELECT IdUser, UserName, UserPassword, Fk_UserRoll "
+        $query = "SELECT IdUser, UserName, UserPassword, Fk_idRoll "
                 . "FROM User_System "
                 . "WHERE IdUser=".$id;
         $user = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
@@ -69,7 +69,7 @@ class UserDB extends PgDataBase{
                         " AND UserPassword= '".$userPassword."';";*/
         
         $query = "  SELECT usy.iduser,usy.username,". 
-                            " usy.userpassword, usy.fk_userroll,". 
+                            " usy.userpassword, usy.fk_idRoll,". 
                             " usr.idroll, usr.rollname, usr.rolldescription".
                     " FROM user_system usy, user_roll usr".
                     " WHERE usy.fk_userroll = usr.idroll".
