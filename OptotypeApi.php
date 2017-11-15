@@ -62,6 +62,18 @@ class OptotypeApi {
        }  
     }
     
+    
+    function putOptotypes(){
+        
+        if ($_GET['action'] == 'updateOptotypes'){
+            $db = new OptotypeDB();
+           //$response = $db->
+       }else{
+           $this->response(400);
+       }
+       
+    }
+    
      /**
     * Respuesta al cliente
     * @param int $code Codigo de respuesta HTTP

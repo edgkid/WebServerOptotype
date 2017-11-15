@@ -9,6 +9,11 @@
         $update->API();
     }
     
+    if ($_GET['action'] == 'updateOptotypes'){
+        $update = new OptotypeApi();
+        $update->API();
+    }
+    
     if ($_GET['action'] == 'users'){
         $userApi = new UserApi();
         $userApi->API(); 
