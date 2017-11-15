@@ -26,7 +26,7 @@ class PatientApi {
             echo'post';
             break;                
         case 'PUT'://actualiza
-            echo'put';
+            $this->putPatients();
             break;      
         case 'DELETE'://elimina
             echo'delete';
@@ -51,6 +51,18 @@ class PatientApi {
            $this->response(400);
        }
        
+    }
+    
+    
+    function putPatients(){
+        
+        if ($_GET['action'] == 'updateKids'){
+            $db = new PatientDB();
+           $response = $db->putPatientsImage();
+       }else{
+           $this->response(400);
+       }
+        
     }
     
      function response($code=200, $status="", $message="") {

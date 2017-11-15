@@ -2,6 +2,12 @@
     require_once 'UserApi.php';
     require_once 'PatientApi.php';
     require_once 'OptotypeApi.php';
+
+    
+    if ($_GET['action'] == 'updateKids'){
+        $update = new PatientApi();
+        $update->API();
+    }
     
     if ($_GET['action'] == 'users'){
         $userApi = new UserApi();
