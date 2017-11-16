@@ -27,7 +27,7 @@ class OptotypeApi {
             echo'post';
             break;                
         case 'PUT'://actualiza
-            echo'put';
+            $this->putOptotypes();
             break;      
         case 'DELETE'://elimina
             echo'delete';
@@ -67,7 +67,7 @@ class OptotypeApi {
         
         if ($_GET['action'] == 'updateOptotypes'){
             $db = new OptotypeDB();
-           //$response = $db->
+            $response = $db->putOptotypesImage();
        }else{
            $this->response(400);
        }

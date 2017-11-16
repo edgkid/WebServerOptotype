@@ -35,4 +35,35 @@ class OptotypeDB extends PgDataBase{
         return $data; 
     }
     
+    public function putOptotypesImage (){
+        
+        $directory="optotypes";
+        $path = ""; 
+        $count = 0;
+        
+        
+        $files = opendir($directory);
+        
+        while ($file = readdir($files)){
+    
+            if ($count >1){
+                $path = $directory."/".$file;
+                $name = explode(".", $file);
+                $bytesFile = file_get_contents($path);
+                $bytesFile = pg_escape_bytea($bytesFile);
+                //echo $path."</br>";
+                $query = " UPDATE optotype SET image = '".$bytesFile.
+                         "' WHERE optotypecode = '".
+                          $name[0]."'";
+                $result = pg_query($query);
+                if($result)
+                    echo 'exito al actualizar'.$name[0]."</br>";
+                else 
+                    echo 'fallo al actualizar'.$name[0]."</br>";
+            }
+            $count ++;
+        }
+        
+    } 
+    
 }
