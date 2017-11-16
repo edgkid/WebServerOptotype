@@ -21,7 +21,7 @@ class OptotypeApi {
         $method = $_SERVER['REQUEST_METHOD'];
         switch ($method) {
         case 'GET'://consulta
-            $this->getUsers();
+            $this->getOptotypes();
             break;     
         case 'POST'://inserta
             echo'post';
@@ -44,10 +44,12 @@ class OptotypeApi {
     *  - mostrara un solo registro 
     *  - mostrara un array vacio
     */
-    function getUsers(){
+    function getOptotypes(){
        if ($_GET['action'] == 'optotypes'){
            $db = new OptotypeDB();
-           if(isset($_GET['id'])){
+           $response = $db->getOptotypes();
+           echo json_encode($response,JSON_PRETTY_PRINT);
+           /*if(isset($_GET['id'])){
                //$response = $db->getUserById($_GET['id']);
                echo json_encode($response,JSON_PRETTY_PRINT);
            }elseif (isset($_GET['userName']) && isset($_GET['userPassword'])) {
@@ -56,7 +58,7 @@ class OptotypeApi {
             }else{
                $response = $db->getOptotypes();
                echo json_encode($response,JSON_PRETTY_PRINT);
-           }
+           }*/
        }else{
            $this->response(400);
        }  

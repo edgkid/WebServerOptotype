@@ -24,20 +24,21 @@ class OptotypeDB extends PgDataBase{
     public function getOptotypes (){
         
         $data = array();
-        $query = "SELECT IdOptotype, OptotypeCode, OptotypeName "
+        $query = "SELECT IdOptotype, OptotypeCode, OptotypeName, Image "
                 . "FROM Optotype";
         $users = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
        
         while ($line = pg_fetch_array($users, null, PGSQL_ASSOC)) {
-            $data[] = $line;
-        }
+            $data []= array('idOptotype'=>$line['idoptotype'],'optotypeName'=>$line['optotypename'],'optotypeCode'=>$line['optotypecode'],'image'=> base64_encode(pg_unescape_bytea($line['image'])));
+         }   
+            
      
         return $data; 
     }
     
     public function putOptotypesImage (){
         
-        $directory="optotypes";
+        $directory="optotypesImage";
         $path = ""; 
         $count = 0;
         
