@@ -27,6 +27,7 @@ class PatientDB extends PgDataBase {
                "           pat.middleName as middleName, pat.lastName as lastName,".
                "           pat.maidenName as maidenName ,".
                "    (extract(year from  current_timestamp) - extract(year from pat.birthDay)) as yearsOld,".
+               "    pat.photo as image,". 
                "    pat.fk_idUser as fkUSer".
                "  FROM Patient pat, Medical_Appointment mea".
                "  WHERE pat.idPatient = mea.fk_idPatient".
@@ -35,7 +36,8 @@ class PatientDB extends PgDataBase {
         $patient = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
        
         while ($line = pg_fetch_array($patient, null, PGSQL_ASSOC)) {
-            $data[] = $line;
+            //$data[] = $line;
+            $data []= array('idPatient'=>$line['idpatient'],'firstName'=>$line['firstname'],'middleName'=>$line['middlename'],'lastName'=>$line['lastname'],'maidenName'=>$line['maidenname'],'yearsOld'=>$line['yearsold'],'image'=> base64_encode(pg_unescape_bytea($line['image'])),'fkUSer'=>$line['fkuser']);
         }
         
         return $data;

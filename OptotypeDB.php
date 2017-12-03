@@ -25,7 +25,7 @@ class OptotypeDB extends PgDataBase{
         
         $data = array();
         $query = "SELECT IdOptotype, OptotypeCode, OptotypeName, Image "
-                . "FROM Optotype";
+                . "FROM Optotype where idOptotype = 1";
         $users = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
        
         while ($line = pg_fetch_array($users, null, PGSQL_ASSOC)) {
