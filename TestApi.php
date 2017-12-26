@@ -14,6 +14,7 @@ class TestApi{
             break;     
         case 'POST'://inserta
             $this->saveTest();
+            echo 'post';
             break;                
         case 'PUT'://actualiza
             echo 'put';
