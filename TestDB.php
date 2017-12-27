@@ -35,8 +35,8 @@ class TestDB extends PgDataBase{
     
     private function saveOptotpeTest($idOptotype, $idTest){
         
-        $query = "INSERT INTO OPTOTYPE_TEST (fk_idoptotype, fk_idtest) VALUES (";
-        $query = $query.$idOptotype.",".$idTest.")";
+        $query = "INSERT INTO OPTOTYPE_TEST (status, fk_idoptotype, fk_idtest) VALUES (";
+        $query = $query."'N',".$idOptotype.",".$idTest.")";
         
         $result = pg_query($query);
                 if($result)
