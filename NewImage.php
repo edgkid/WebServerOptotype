@@ -2,8 +2,8 @@
 
 class NewImage {
     
-    private $optotypePath = "";
-    private $optometricCardPath = "";
+    private $optotypePath = "C:/xampp/htdocs/WSOptotype/optotypesImage";
+    private $optometricCardPath = "C:/xampp/htdocs/WSOptotype/OptometricCard";
     private $distance;
     
     function __construct() {

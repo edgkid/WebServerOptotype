@@ -69,6 +69,7 @@ class TestApi{
            $obj = json_decode( file_get_contents('php://input') );   
             $objArr = (array)$obj;
            $optometricCard->setDistance($objArr['distance']);
+           $optometricCard->setTestCode("R");
            $optometricCard->findInteractionData($objArr['patientId']);
        }else{
            $this->response(400);

@@ -1,12 +1,11 @@
 <?php
 
 require_once 'PgDataBase.php';
-require_once'NewImage.php';
+require_once 'NewImage.php';
 
 class OptometricTest extends NewImage {
     
-    private $testCodeLeft = "";
-    private $testCodeRigth = "";
+    private $testCode = "";
     private $patient;
     private $interaction = array();
     
@@ -14,23 +13,68 @@ class OptometricTest extends NewImage {
         parent::__construct();
     }
     
+    function getTestCode() {
+        return $this->testCode;
+    }
+
+    function setTestCode($testCode) {
+        $this->testCode = $testCode;
+    }
+
+        
     /*Metodo para obtener resutados de interacción*/
     function findInteractionData ($patientId){
         
+        $this->getNameNewTest($patientId);
+        //$this->getElementsInteraction($patientId);
+        
+    }
+    
+    function getNameNewTest ($patientId){
+        
         $date = getdate();
         $today = "'".$date['mday']."/".$date['mon']."/".$date['year']."'";
-        
-        $query = "  SELECT te.testCode, op.idOptotype, op.optotypeCode ". 
+        echo $today;
+        $query = "  SELECT DISTINCT(te.testCode) ". 
                     " FROM Patient pa, Medical_appointment ma, Test te, Optotype_Test ot, Optotype op ".
                     " WHERE pa.idPatient = ma.fk_idPatient ".
                         " AND ma.idAppointment = te.fk_idAppointment ".
                         " AND te.idTest = ot.fk_idTest ".
                         " AND ot.fk_idOptotype = op.idOptotype ".
                         " AND pa.idPatient = ".$patientId.
-                        " AND to_char(ma.appointmentdate,'dd/mm/yyyy') = ".$today;
+                        " AND to_char(ma.appointmentdate,'dd/mm/yyyy') = ".$today.
+                        " AND te.testCode LIKE '%".$this->testCode."%'";  
         
+        $db = new PgDataBase();
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+       
+        if ($row = pg_fetch_row($result)) {
+            //$this->setTestCode($row[0]);
+            echo $row[0];
+        }
+        echo $this->testCode;
+     
+    }
+    
+    function getElementsInteraction ($patientId){
         
+        $date = getdate();
+        $today = "'".$date['mday']."/".$date['mon']."/".$date['year']."'";
         
+        $query = "  SELECT op.optotypeCode". 
+                    " FROM Patient pa, Medical_appointment ma, Test te, Optotype_Test ot, Optotype op ".
+                    " WHERE pa.idPatient = ma.fk_idPatient ".
+                        " AND ma.idAppointment = te.fk_idAppointment ".
+                        " AND te.idTest = ot.fk_idTest ".
+                        " AND ot.fk_idOptotype = op.idOptotype ".
+                        " AND pa.idPatient = ".$patientId.
+                        " AND to_char(ma.appointmentdate,'dd/mm/yyyy') = ".$today.
+                        " AND te.testCode LIKE '%".$this->getTestCode()."%'";  
+        
+        $db = new PgDataBase();
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+        echo $query;
         
     }
     
