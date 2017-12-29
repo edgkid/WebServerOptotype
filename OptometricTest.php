@@ -8,6 +8,7 @@ class OptometricTest extends NewImage {
     
     function __construct($testCode) {
         $this->testCode = $testCode;
+        parent::__construct();
     }
     
     /*Metodo para obtener resutados de interacción*/

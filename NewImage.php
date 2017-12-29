@@ -4,10 +4,12 @@ class NewImage {
     
     private $optotypePath = "";
     private $optometricCardPath = "";
+    private $distance;
     
-    function __construct($optotypePath, $optometricCardPath) {
+    function __construct($optotypePath, $optometricCardPath, $distance) {
         $this->optotypePath = $optotypePath;
         $this->optometricCardPath = $optometricCardPath;
+        $this->distance = $distance;
     }
     
     function getOptotypePath() {
@@ -25,7 +27,16 @@ class NewImage {
     function setOptometricCardPath($optometricCardPath) {
         $this->optometricCardPath = $optometricCardPath;
     }
+    
+    function getDistance() {
+        return $this->distance;
+    }
 
+    function setDistance($distance) {
+        $this->distance = $distance;
+    }
+
+    
     /*La siguiente se encarga de cra una nueva imagen en base aun lienzo para las carta
      */
     function resizeImage(){

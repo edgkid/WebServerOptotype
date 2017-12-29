@@ -1,6 +1,7 @@
 <?php
 
 require_once 'TestDB.php';
+require_once 'OptometricTest.php';
 
 class TestApi{
     
@@ -10,7 +11,7 @@ class TestApi{
         $method = $_SERVER['REQUEST_METHOD'];
         switch ($method) {
         case 'GET'://consulta
-            echo 'get';
+            $this->optometricTest();
             break;     
         case 'POST'://inserta
             $this->saveTest();
@@ -56,5 +57,18 @@ class TestApi{
            $response = array("status" => $status ,"message"=>$message);  
            echo json_encode($response,JSON_PRETTY_PRINT);    
        }   
-    }  
+    } 
+    
+    /**
+     * 
+     */
+    function optometricTest(){
+    
+        $optometricCard = new OptometricTest();
+        $optometricCard->setDistance(5);
+        $optometricCard->findInteractionData();
+        
+    }
+    
+    
 }
