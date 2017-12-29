@@ -6,12 +6,11 @@ class NewImage {
     private $optometricCardPath = "";
     private $distance;
     
-    function __construct($optotypePath, $optometricCardPath, $distance) {
-        $this->optotypePath = $optotypePath;
-        $this->optometricCardPath = $optometricCardPath;
-        $this->distance = $distance;
+    function __construct() {
+     
     }
-    
+
+ 
     function getOptotypePath() {
         return $this->optotypePath;
     }

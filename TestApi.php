@@ -63,10 +63,16 @@ class TestApi{
      * 
      */
     function optometricTest(){
-    
-        $optometricCard = new OptometricTest();
-        $optometricCard->setDistance(5);
-        $optometricCard->findInteractionData();
+        
+        if ($_GET['action'] == 'test'){
+           $optometricCard = new OptometricTest('prueba');
+           $obj = json_decode( file_get_contents('php://input') );   
+            $objArr = (array)$obj;
+           $optometricCard->setDistance($objArr['distance']);
+           $optometricCard->findInteractionData($objArr['patientId']);
+       }else{
+           $this->response(400);
+       }
         
     }
     
