@@ -26,10 +26,13 @@ class NewImage {
         $this->optometricCardPath = $optometricCardPath;
     }
 
+    /*La siguiente se encarga de cra una nueva imagen en base aun lienzo para las carta
+     */
     function resizeImage(){
         
     }
 
+    /*sra la encargada de insertar cada optotipo dentro de la carta*/
     function newOptometricCard(){
         
     }
