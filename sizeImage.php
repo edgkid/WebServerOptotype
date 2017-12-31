@@ -2,17 +2,21 @@
 
 class sizeImage {
     
-   private $avList = array('0.1','0.8','0.63','0.5','0.4','0.5','0.33','0.25','0.2','0.17','0.13','0.1');
+   private $avList = array('1','0.8','0.63','0.5','0.4','0.33','0.25','0.2','0.17','0.13','0.1');
+   private $cmSizeList = array();
+   private $pixelSizeList = array();
    private $distance;
    private $cm=10;
    private $mm=1000;
+   private $sizeFive = 5;
    
    function __construct($distance) {
+       
        $this->distance = $distance;
    }
    
    function getDistance() {
-       return $this->distance;
+       return $this->distance."\n";
    }
 
    function setDistance($distance) {
@@ -20,8 +24,38 @@ class sizeImage {
    }
 
    /*metodo para calcular el tamaño de cada optotipo segun reglon en la carta optometrica*/
-   function findSizeForOptotype(){
+   function findSizeForOptotypeInCM(){
+       
+       echo $this->distance."\n";
+       
+       $position = 0;
+       $arcMin = 1;
+       $min = 60;
+       $grade = 180;
+       $e=0;
+       $h=0;
+       
+       $sizeArray = count($this->avList);
+       
+       while ($position < $sizeArray ){
+           echo $this->avList[$position]."\n";
+           
+           $avMin = $arcMin/$this->avList[$position];//Av in arc min
+           $avGrade = $avMin * ($arcMin/$min);//Av in Grade
+           $avRadians =$avGrade * (pi()/$grade);//Av un radians
+           $e = $avRadians * ($this->distance * $this->mm);//size by minimal detail in mm
+           $h = $e * $this->sizeFive;//maximal size by optotype in mm
+           echo $h." mm"."\n";
+           $h = round($h /$this->cm,2);  
+           echo $h." cm"."\n";
+           
+           $this->cmSizeList[$position] = $h; 
+           
+           $position ++;
+       }
+       
        
    }
 
 }
+

@@ -2,6 +2,7 @@
 
 require_once 'PgDataBase.php';
 require_once 'NewImage.php';
+require_once 'sizeImage.php';
 
 class OptometricTest extends NewImage {
     
@@ -27,6 +28,8 @@ class OptometricTest extends NewImage {
         
         $this->getNameNewTest($patientId);
         $this->getElementsInteraction($patientId);
+        $sizeCalculator = new sizeImage($this->getDistance());
+        $sizeCalculator->findSizeForOptotypeInCM();
         
     }
     
