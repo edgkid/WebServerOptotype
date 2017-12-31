@@ -23,7 +23,22 @@ class OptometricTest extends NewImage {
     function setTestCode($testCode) {
         $this->testCode = $testCode;
     }
+    
+    function getWidth() {
+        return $this->width;
+    }
 
+    function getHigh() {
+        return $this->high;
+    }
+
+    function setWidth($width) {
+        $this->width = $width;
+    }
+
+    function setHigh($high) {
+        $this->high = $high;
+    }
         
     /*Metodo para obtener resutados de interacción*/
     function findInteractionData ($patientId){

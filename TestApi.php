@@ -71,6 +71,9 @@ class TestApi{
            $optometricCard->setDistance($objArr['distance']);
            $optometricCard->setTestCode("R");
            $optometricCard->findInteractionData($objArr['patientId']);
+           $optometricCard->resizeImage($optometricCard->getHigh(),$optometricCard->getWidth(),$optometricCard->getTestCode());
+           $optometricCard->newOptometricCard();
+           
        }else{
            $this->response(400);
        }
