@@ -59,7 +59,7 @@ class sizeImage {
        
        echo "Pixel"."\n";
        $value = 0; //varieble for size in pixel
-       $ppp=72;//inches per pixel
+       $ppp=300;//point per inches
        $pCm= 2.54; // Cm by inches
        $position = 0;
        
