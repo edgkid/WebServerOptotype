@@ -73,6 +73,33 @@ class sizeImage {
            $position ++;
        }
    }
+   
+   function optometricCarHigh (){
+       
+       $value = 0;
+       $headAnFooter = 0;
+       $position = 0;
+       $percentage = 0.15;
+       $lineSpace = 355; // equivalente en pixel de 3cm
+       
+       echo "Altura de la carta".'\n';
+       echo "high: ";
+       $sizeArray = count($this->pixelSizeList);
+       
+       while($position < $sizeArray){
+           
+           $value = $value + $this->pixelSizeList[$position];
+           $position ++;
+       }
+       
+       $headAnFooter = round(($value * $percentage), 0);
+       
+       $value = $value + $headAnFooter  + $lineSpace;
+       
+       echo $value;
+       
+       return $value;
+   }
 
 }
 

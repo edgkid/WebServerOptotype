@@ -9,6 +9,8 @@ class OptometricTest extends NewImage {
     private $testCode = "";
     private $patient;
     private $interaction = array();
+    private $width = 0;
+    private $high = 0;
     
     function __construct($testCode) {
         parent::__construct();
@@ -31,6 +33,7 @@ class OptometricTest extends NewImage {
         $sizeCalculator = new sizeImage($this->getDistance());
         $sizeCalculator->findSizeForOptotypeInCM();
         $sizeCalculator->findSizeForOptotypeInPixel();
+        $this->high = $sizeCalculator->optometricCarHigh();
     } 
     
     function  getNameNewTest ($patientId){
