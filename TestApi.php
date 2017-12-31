@@ -65,18 +65,25 @@ class TestApi{
     function optometricTest(){
         
         if ($_GET['action'] == 'test'){
-           $optometricCard = new OptometricTest('prueba');
-           $obj = json_decode( file_get_contents('php://input') );   
-            $objArr = (array)$obj;
-           $optometricCard->setDistance($objArr['distance']);
-           $optometricCard->setTestCode("R");
-           $optometricCard->findInteractionData($objArr['patientId']);
-           $optometricCard->resizeImage($optometricCard->getHigh(),$optometricCard->getWidth(),$optometricCard->getTestCode());
-           $optometricCard->newOptometricCard();
            
+           $obj = json_decode( file_get_contents('php://input') );   
+           $objArr = (array)$obj;
+           $this->newTest($objArr, "R");
+           $this->newTest($objArr, "L");
        }else{
            $this->response(400);
        }
+        
+    }
+    
+    function newTest($objArr, $eye){
+        
+        $optometricCard = new OptometricTest('prueba');
+        $optometricCard->setDistance($objArr['distance']);
+        $optometricCard->setTestCode($eye);
+        $optometricCard->findInteractionData($objArr['patientId']);
+        $optometricCard->resizeImage($optometricCard->getHigh(),$optometricCard->getWidth(),$optometricCard->getTestCode());
+        $optometricCard->newOptometricCard();
         
     }
     
