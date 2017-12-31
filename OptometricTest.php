@@ -26,15 +26,16 @@ class OptometricTest extends NewImage {
     function findInteractionData ($patientId){
         
         $this->getNameNewTest($patientId);
-        //$this->getElementsInteraction($patientId);
+        $this->getElementsInteraction($patientId);
         
     }
     
-    function getNameNewTest ($patientId){
+    function  getNameNewTest ($patientId){
         
         $date = getdate();
+        $value = "";
         $today = "'".$date['mday']."/".$date['mon']."/".$date['year']."'";
-        echo $today;
+        echo $today."\n";
         $query = "  SELECT DISTINCT(te.testCode) ". 
                     " FROM Patient pa, Medical_appointment ma, Test te, Optotype_Test ot, Optotype op ".
                     " WHERE pa.idPatient = ma.fk_idPatient ".
@@ -49,16 +50,16 @@ class OptometricTest extends NewImage {
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
        
         if ($row = pg_fetch_row($result)) {
-            //$this->setTestCode($row[0]);
-            echo $row[0];
+            $this->testCode = $row[0];
         }
-        echo $this->testCode;
+        echo $this->testCode."\n";
      
     }
     
     function getElementsInteraction ($patientId){
         
         $date = getdate();
+        $position = 0;
         $today = "'".$date['mday']."/".$date['mon']."/".$date['year']."'";
         
         $query = "  SELECT op.optotypeCode". 
@@ -69,12 +70,17 @@ class OptometricTest extends NewImage {
                         " AND ot.fk_idOptotype = op.idOptotype ".
                         " AND pa.idPatient = ".$patientId.
                         " AND to_char(ma.appointmentdate,'dd/mm/yyyy') = ".$today.
-                        " AND te.testCode LIKE '%".$this->getTestCode()."%'";  
+                        " AND te.testCode LIKE '%".$this->testCode."%'";  
         
         $db = new PgDataBase();
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
         
-        echo $query;
+        echo $query."\n";
+        while ($row = pg_fetch_row($result)) {
+            echo $row [0]."\n";
+            $this->interaction[$position] = $row [0];
+            $position ++;
+         }   
         
     }
     
