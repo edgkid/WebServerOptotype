@@ -34,6 +34,8 @@ class OptometricTest extends NewImage {
         $sizeCalculator->findSizeForOptotypeInCM();
         $sizeCalculator->findSizeForOptotypeInPixel();
         $this->high = $sizeCalculator->optometricCarHigh();
+        $this->width = $sizeCalculator->optometricCarWidth();
+ 
     } 
     
     function  getNameNewTest ($patientId){

@@ -79,10 +79,10 @@ class sizeImage {
        $value = 0;
        $headAnFooter = 0;
        $position = 0;
-       $percentage = 0.15;
+       $percentage = 0.10;
        $lineSpace = 355; // equivalente en pixel de 3cm
        
-       echo "Altura de la carta".'\n';
+       echo "Altura de la carta"."\n";
        echo "high: ";
        $sizeArray = count($this->pixelSizeList);
        
@@ -99,6 +99,27 @@ class sizeImage {
        echo $value;
        
        return $value;
+   }
+   
+   function optometricCarWidth (){
+       
+        $value = 0;
+        $rightAnLeft = 0;
+        $numElements = 2;
+        $percentage = 0.15;
+        $columnSpace = 355; // equivalente en pixel de 3cm
+       
+        echo "\n"."Ancho de la carta"."\n";
+        echo "width: ";
+       
+        $position = count($this->pixelSizeList);
+        $value = $this->pixelSizeList[$position-1] * $numElements +($columnSpace * 2);
+
+        $value = round($value + ($value * $percentage),0);
+      
+        echo $value;
+       
+        return $value;
    }
 
 }
