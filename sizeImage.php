@@ -52,9 +52,26 @@ class sizeImage {
            $this->cmSizeList[$position] = $h; 
            
            $position ++;
+       }  
+   }
+   
+   function findSizeForOptotypeInPixel (){
+       
+       echo "Pixel"."\n";
+       $value = 0; //varieble for size in pixel
+       $ppp=72;//inches per pixel
+       $pCm= 2.54; // Cm by inches
+       $position = 0;
+       
+       $sizeArray = count($this->cmSizeList);
+       
+       while ($position < $sizeArray ){
+           
+           $value = round(($this->cmSizeList[$position]*$ppp)/$pCm);
+           echo $value." Pixel"."\n";
+           $this->pixelSizeList[$position] = $value;
+           $position ++;
        }
-       
-       
    }
 
 }

@@ -30,8 +30,8 @@ class OptometricTest extends NewImage {
         $this->getElementsInteraction($patientId);
         $sizeCalculator = new sizeImage($this->getDistance());
         $sizeCalculator->findSizeForOptotypeInCM();
-        
-    }
+        $sizeCalculator->findSizeForOptotypeInPixel();
+    } 
     
     function  getNameNewTest ($patientId){
         
