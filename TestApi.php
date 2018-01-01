@@ -83,7 +83,7 @@ class TestApi{
         $optometricCard->setTestCode($eye);
         $optometricCard->findInteractionData($objArr['patientId']);
         $optometricCard->resizeImage($optometricCard->getHigh(),$optometricCard->getWidth(),$optometricCard->getTestCode());
-        $optometricCard->newOptometricCard();
+        $optometricCard->newOptometricCard($optometricCard->getInteraction(),$optometricCard->getTestCode());
         
     }
     

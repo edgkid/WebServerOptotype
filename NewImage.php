@@ -90,15 +90,17 @@ class NewImage {
         //Se destruye variable $img_original para liberar memoria
         imagedestroy($imgLienzo);
 
-        //Definimos la calidad de la imagen final
-        //$calidad=95;
         //Se crea la imagen final en el directorio indicado
         imagepng($newImage,"OptometricCard/".$name.".png");
 
     }
 
     /*sra la encargada de insertar cada optotipo dentro de la carta*/
-    function newOptometricCard(){
+    function newOptometricCard($iteractionElements, $testCode){
+        
+        echo 'llamado a función para incluir optotipos'."\n";
+        echo $testCode."\n";
+        echo count($iteractionElements);
         
     }
 }

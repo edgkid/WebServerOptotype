@@ -80,11 +80,11 @@ class TestDB extends PgDataBase{
         $query = " SELECT idAppointment ".
                  " FROM Medical_Appointment ma ".
                  " WHERE ma.fk_idPatient = ".$idPatient.
-                 "      AND to_char(ma.appointmentdate, 'dd/mm/yyyy') = ".
-                 "         (SELECT COALESCE((EXTRACT(day FROM  current_timestamp)) ". 
-                 "          || '/'|| (EXTRACT(month FROM  current_timestamp))|| '/'|| ". 
+                 "      AND ma.appointmentdate = to_date(".
+                 "         (SELECT COALESCE((EXTRACT(day FROM  current_timestamp))".  
+                 "          || '/'|| (EXTRACT(month FROM  current_timestamp))|| '/'||". 
                  "          (EXTRACT(year FROM  current_timestamp)))".
-                 "           FROM current_timestamp)";
+                 "           FROM current_timestamp), 'dd/mm/yyyy')";
         
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
        

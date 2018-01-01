@@ -39,7 +39,16 @@ class OptometricTest extends NewImage {
     function setHigh($high) {
         $this->high = $high;
     }
-        
+    
+    function getInteraction() {
+        return $this->interaction;
+    }
+
+    function setInteraction($interaction) {
+        $this->interaction = $interaction;
+    }
+
+            
     /*Metodo para obtener resutados de interacción*/
     function findInteractionData ($patientId){
         
@@ -66,7 +75,7 @@ class OptometricTest extends NewImage {
                         " AND te.idTest = ot.fk_idTest ".
                         " AND ot.fk_idOptotype = op.idOptotype ".
                         " AND pa.idPatient = ".$patientId.
-                        " AND to_char(ma.appointmentdate,'dd/mm/yyyy') = ".$today.
+                        " AND ma.appointmentdate = to_date(".$today.",'dd/mm/yyyy')".
                         " AND te.testCode LIKE '%".$this->testCode."%'";  
         
         $db = new PgDataBase();
@@ -92,7 +101,7 @@ class OptometricTest extends NewImage {
                         " AND te.idTest = ot.fk_idTest ".
                         " AND ot.fk_idOptotype = op.idOptotype ".
                         " AND pa.idPatient = ".$patientId.
-                        " AND to_char(ma.appointmentdate,'dd/mm/yyyy') = ".$today.
+                        " AND ma.appointmentdate = to_date(".$today.",'dd/mm/yyyy')".
                         " AND te.testCode LIKE '%".$this->testCode."%'";  
         
         $db = new PgDataBase();
@@ -107,6 +116,4 @@ class OptometricTest extends NewImage {
         
     }
     
-    
-
 }
