@@ -40,9 +40,9 @@ class NewImage {
     
     /*La siguiente se encarga de cra una nueva imagen en base aun lienzo para las carta
      */
-    function resizeImage($heigh, $width, $name){
+    function resizeImage($heigh, $witdh, $name){
         
-        $imageLienzo="C:/xampp/htdocs/NuevaImagen/Imagenes/Lienzo.png";
+        /*$imageLienzo="C:/xampp/htdocs/NuevaImagen/Imagenes/Lienzo.png";
  
         //Creamos una variable imagen a partir de la imagen original
         $imgLienzo = imagecreatefrompng($imageLienzo);
@@ -85,7 +85,13 @@ class NewImage {
         imagedestroy($imgLienzo);
 
         //Se crea la imagen final en el directorio indicado
-        imagepng($newImage,"OptometricCard/".$name.".png");
+        imagepng($newImage,"OptometricCard/".$name.".png");*/
+        
+        $img = imagecreate($witdh, $heigh);
+        imagecolorallocate($img, 255, 255, 255);
+        header("Content-type: image/png");
+        imagepng($img, "OptometricCard/".$name.".png");
+        imagedestroy($img);
 
     }
 
@@ -135,12 +141,14 @@ class NewImage {
         
         // primero indico la dirección de las imagnes a utilzar
         $imageCanvas = "C:/xampp/htdocs/WSOptotype/OptometricCard/".$testCode.".png";
-        $imageOptotype = "C:/xampp/htdocs/WSOptotype/optotypesImage/".$optotype.".png";
+        $imageOptotype = "C:/xampp/htdocs/WSOptotype/OptotypeForCard/".$optotype.".png";
 
         // Creo identificadores para cada imagen a utilizar
         $imgCanvas = imagecreatefrompng($imageCanvas);
         $imgOptotype = imagecreatefrompng($imageOptotype);
-
+        imagealphablending($imgOptotype,false);
+        imagesavealpha($imgOptotype, false);
+        
         // Se procede a combinar las imagenes
         imagecopyresampled(
         $imgCanvas,
@@ -162,11 +170,11 @@ class NewImage {
         imagedestroy($imgCanvas);
         imagedestroy($imgOptotype);
         
-        $this->SettingOnRowAndColunm();
+        $this->SettingOnRowAndColunm($x,$y);
         
     }
     
-    function SettingOnRowAndColunm (){
+    function SettingOnRowAndColunm ($x, $y){
         if ($y){
             $this->lineSpace = $this->lineSpace + 100;
             $this->columnSpace = 0;
