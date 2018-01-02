@@ -68,7 +68,6 @@ class TestApi{
            
            $obj = json_decode( file_get_contents('php://input') );   
            $objArr = (array)$obj;
-           $this->newTest($objArr, "R");
            $this->newTest($objArr, "L");
        }else{
            $this->response(400);

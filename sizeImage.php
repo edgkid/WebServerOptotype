@@ -102,7 +102,7 @@ class sizeImage {
        
        $headAnFooter = round(($value * $percentage), 0);
        
-       $value = $value + $headAnFooter  + $lineSpace;
+       $value = $value + $headAnFooter  + ($lineSpace * 9);
        
        echo $value;
        
@@ -121,7 +121,7 @@ class sizeImage {
         echo "width: ";
        
         $position = count($this->pixelSizeList);
-        $value = $this->pixelSizeList[$position-1] * $numElements +($columnSpace * 2);
+        $value = $this->pixelSizeList[$position-1] * $numElements +($columnSpace * 6);
 
         $value = round($value + ($value * $percentage),0);
       
