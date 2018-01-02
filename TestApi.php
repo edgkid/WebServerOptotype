@@ -78,12 +78,14 @@ class TestApi{
     
     function newTest($objArr, $eye){
         
+        $pixelArray = array();
+        
         $optometricCard = new OptometricTest('prueba');
         $optometricCard->setDistance($objArr['distance']);
         $optometricCard->setTestCode($eye);
-        $optometricCard->findInteractionData($objArr['patientId']);
+        $pixelArray = $optometricCard->findInteractionData($objArr['patientId']);
         $optometricCard->resizeImage($optometricCard->getHigh(),$optometricCard->getWidth(),$optometricCard->getTestCode());
-        $optometricCard->newOptometricCard($optometricCard->getInteraction(),$optometricCard->getTestCode());
+        $optometricCard->newOptometricCard($optometricCard->getInteraction(),$optometricCard->getTestCode(), $optometricCard->getWidth(), $optometricCard->getHigh(), $pixelArray);
         
     }
     

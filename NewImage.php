@@ -5,6 +5,8 @@ class NewImage {
     private $optotypePath = "C:/xampp/htdocs/WSOptotype/optotypesImage";
     private $optometricCardPath = "C:/xampp/htdocs/WSOptotype/OptometricCard";
     private $distance;
+    private $lineSpace = 0;
+    private $columnSpace = 0;
     
     function __construct() {
      
@@ -62,20 +64,12 @@ class NewImage {
             $finalWidth = $widthLienzo;
             $finalHeigh = $heighLienzo;
         }
-        /*
-        * si proporcion horizontal*alto mayor que el alto maximo,
-        * alto final es alto por la proporcion horizontal
-        * es decir, le quitamos al ancho, la misma proporcion que
-        * le quitamos al alto
-        *
-        */
+       
         elseif (($x_ratio * $heighLienzo) < $maxHeigh){
             $finalHeigh = ceil($x_ratio * $heighLienzo);
             $finalWidth = $maxWidth;
         }
-        /*
-        * Igual que antes pero a la inversa
-        */
+
         else{
             $finalWidth = ceil($y_ratio * $widthLienzo);
             $finalHeigh = $maxHeigh;
@@ -96,11 +90,90 @@ class NewImage {
     }
 
     /*sra la encargada de insertar cada optotipo dentro de la carta*/
-    function newOptometricCard($iteractionElements, $testCode){
+    function newOptometricCard($interactionElements, $testCode, $canvasWidth, $canvasHeigh, $pixelArray){
+        $column = 1;
+        $row = 1;
+        $totalColumn = 1;
+        $position = 0;
+        $totalRow = count($pixelArray);
+        $x = false;
+        $y = true;
         
-        echo 'llamado a función para incluir optotipos'."\n";
-        echo $testCode."\n";
-        echo count($iteractionElements);
         
+        $pixelArray = array_reverse ( $pixelArray);
+        echo "\n".count($interactionElements)."\n";
+        echo count($pixelArray)."\n";
+        
+        while ($row <= $totalRow){
+            while ($column <= $totalColumn){
+                
+                if ($position == count($interactionElements)-1)
+                    $position = 0;
+                
+                $imageOptotype = $interactionElements[$position];
+                $this->insertOptotypeInTest($testCode, $imageOptotype, $canvasWidth, $canvasHeigh, $pixelArray[$row-1], $y, $x);
+                $column ++;
+                $position ++;
+                $y = false;
+                $x = true;
+                
+            }
+            
+            $column = 1;
+            $x = false;
+            $y = true;
+            
+            if ($totalColumn != 8)
+                $totalColumn  ++;
+            
+            $row ++;
+        }
+
+    }
+    
+    function insertOptotypeInTest($testCode, $optotype, $canvasWidth, $canvasHeigh, $pixel, $y, $x){
+        
+        // primero indico la dirección de las imagnes a utilzar
+        $imageCanvas = "C:/xampp/htdocs/WSOptotype/OptometricCard/".$testCode.".png";
+        $imageOptotype = "C:/xampp/htdocs/WSOptotype/optotypesImage/".$optotype.".png";
+
+        // Creo identificadores para cada imagen a utilizar
+        $imgCanvas = imagecreatefrompng($imageCanvas);
+        $imgOptotype = imagecreatefrompng($imageOptotype);
+
+        // Se procede a combinar las imagenes
+        imagecopyresampled(
+        $imgCanvas,
+        $imgOptotype,
+        $this->columnSpace,/*posicion en X*/ 
+        $this->lineSpace, /*posicion en Y*/
+        0, 
+        0,
+        100,/*nuevo tamaño en X*/
+        100,/*nuevo tamaño en Y*/
+        imagesx($imgOptotype),/*tamaño original de la imagen en X*/
+        imagesy($imgOptotype) /*tamaño original de la imagen en Y*/
+        );
+        
+        //Solicito que se genere un resultado final
+        imagepng($imgCanvas, "OptometricCard/".$testCode.".png");
+
+        // por buena practica mando a limpipiar la memoria de las imagenes creadas
+        imagedestroy($imgCanvas);
+        imagedestroy($imgOptotype);
+        
+        $this->SettingOnRowAndColunm();
+        
+    }
+    
+    function SettingOnRowAndColunm (){
+        if ($y){
+            $this->lineSpace = $this->lineSpace + 100;
+            $this->columnSpace = 0;
+        }    
+        
+        if ($x){
+            $this->columnSpace = $this->columnSpace + 150;
+        }
     }
 }

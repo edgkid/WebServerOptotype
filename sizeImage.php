@@ -22,7 +22,15 @@ class sizeImage {
    function setDistance($distance) {
        $this->distance = $distance;
    }
+   
+   function getPixelSizeList() {
+       return $this->pixelSizeList;
+   }
 
+   function setPixelSizeList($pixelSizeList) {
+       $this->pixelSizeList = $pixelSizeList;
+   }
+   
    /*metodo para calcular el tamaño de cada optotipo segun reglon en la carta optometrica*/
    function findSizeForOptotypeInCM(){
        

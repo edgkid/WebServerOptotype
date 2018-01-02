@@ -59,6 +59,8 @@ class OptometricTest extends NewImage {
         $sizeCalculator->findSizeForOptotypeInPixel();
         $this->high = $sizeCalculator->optometricCarHigh();
         $this->width = $sizeCalculator->optometricCarWidth();
+        
+        return $sizeCalculator->getPixelSizeList();
  
     } 
     
