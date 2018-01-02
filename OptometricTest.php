@@ -69,7 +69,7 @@ class OptometricTest extends NewImage {
         $date = getdate();
         $value = "";
         $today = "'".$date['mday']."/".$date['mon']."/".$date['year']."'";
-        echo $today."\n";
+
         $query = "  SELECT DISTINCT(te.testCode) ". 
                     " FROM Patient pa, Medical_appointment ma, Test te, Optotype_Test ot, Optotype op ".
                     " WHERE pa.idPatient = ma.fk_idPatient ".
@@ -86,7 +86,7 @@ class OptometricTest extends NewImage {
         if ($row = pg_fetch_row($result)) {
             $this->testCode = $row[0];
         }
-        echo $this->testCode."\n";
+
      
     }
     
@@ -109,9 +109,7 @@ class OptometricTest extends NewImage {
         $db = new PgDataBase();
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
         
-        echo $query."\n";
         while ($row = pg_fetch_row($result)) {
-            echo $row [0]."\n";
             $this->interaction[$position] = $row [0];
             $position ++;
          }   

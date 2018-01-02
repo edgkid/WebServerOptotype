@@ -53,9 +53,7 @@ class sizeImage {
            $avRadians =$avGrade * (pi()/$grade);//Av un radians
            $e = $avRadians * ($this->distance * $this->mm);//size by minimal detail in mm
            $h = $e * $this->sizeFive;//maximal size by optotype in mm
-           echo $h." mm"."\n";
            $h = round($h /$this->cm,2);  
-           echo $h." cm"."\n";
            
            $this->cmSizeList[$position] = $h; 
            
@@ -65,7 +63,6 @@ class sizeImage {
    
    function findSizeForOptotypeInPixel (){
        
-       echo "Pixel"."\n";
        $value = 0; //varieble for size in pixel
        $ppp=300;//point per inches
        $pCm= 2.54; // Cm by inches
@@ -76,7 +73,6 @@ class sizeImage {
        while ($position < $sizeArray ){
            
            $value = round(($this->cmSizeList[$position]*$ppp)/$pCm);
-           echo $value." Pixel"."\n";
            $this->pixelSizeList[$position] = $value;
            $position ++;
        }
@@ -90,8 +86,6 @@ class sizeImage {
        $percentage = 0.10;
        $lineSpace = 355; // equivalente en pixel de 3cm
        
-       echo "Altura de la carta"."\n";
-       echo "high: ";
        $sizeArray = count($this->pixelSizeList);
        
        while($position < $sizeArray){
@@ -104,8 +98,6 @@ class sizeImage {
        
        $value = $value + $headAnFooter  + ($lineSpace * 9);
        
-       echo $value;
-       
        return $value;
    }
    
@@ -116,16 +108,11 @@ class sizeImage {
         $numElements = 2;
         $percentage = 0.15;
         $columnSpace = 355; // equivalente en pixel de 3cm
-       
-        echo "\n"."Ancho de la carta"."\n";
-        echo "width: ";
-       
+
         $position = count($this->pixelSizeList);
         $value = $this->pixelSizeList[$position-1] * $numElements +($columnSpace * 6);
 
         $value = round($value + ($value * $percentage),0);
-      
-        echo $value;
        
         return $value;
    }
