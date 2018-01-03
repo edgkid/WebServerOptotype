@@ -72,8 +72,11 @@ class NewImage {
                     $position = 0;
                 
                 $imageOptotype = $interactionElements[$position];
-                $this->insertOptotypeInTest($testCode, $imageOptotype, $canvasWidth, $canvasHeigh, $pixelArray[$row-1], $y, $x);
-                echo "inserto ".$imageOptotype." en ".$row.".".$column." a ".$pixelArray[$row-1]."X".$pixelArray[$row-1]."\n"; 
+                $this->insertOptotypeInTest($testCode, $imageOptotype, $canvasWidth, $canvasHeigh, $pixelArray[$row-1], $y, $x, ($row-1));
+                //echo "inserto ".$imageOptotype." en ".$row.".".$column." a ".$pixelArray[$row-1]."X".$pixelArray[$row-1]."\n"; 
+                
+                //echo "Fila: ".$row." ubicar x= ".(($canvasWidth/2)-($pixelArray[$row-1]/2))."\n";
+                
                 $column ++;
                 $position ++;
                 $y = false;
@@ -93,7 +96,7 @@ class NewImage {
 
     }
     
-    function insertOptotypeInTest($testCode, $optotype, $canvasWidth, $canvasHeigh, $pixel, $y, $x){
+    function insertOptotypeInTest($testCode, $optotype, $canvasWidth, $canvasHeigh, $pixel, $y, $x, $row){
         
         // primero indico la dirección de las imagnes a utilzar
         $imageCanvas = "C:/xampp/htdocs/WSOptotype/OptometricCard/".$testCode.".png";
@@ -106,7 +109,7 @@ class NewImage {
         imagesavealpha($imgOptotype, false);
         
         // Se procede a combinar las imagenes
-        $this->SettingOnRowAndColunm($x,$y, $pixel);
+        $this->SettingOnRowAndColunm($x, $y, $pixel, $canvasWidth, $canvasHeigh, $row);
         
         imagecopyresampled(
         $imgCanvas,
@@ -130,7 +133,7 @@ class NewImage {
         
     }
     
-    function SettingOnRowAndColunm ($x, $y, $pixel){
+    function SettingOnRowAndColunm ($x, $y, $pixel, $canvasWidth, $canvasHeigh, $row){
         
         $this->action ++;
         
@@ -138,13 +141,18 @@ class NewImage {
             
             if ($y){
                 $this->lineSpace = $this->lineSpace +  $pixel + 355;
-                $this->columnSpace = 0;
+                if ($row < 8)
+                    $this->columnSpace = (($canvasWidth/2)-((($pixel *($row+1)) +($row*355))/2));
+                else
+                    $this->columnSpace = (($canvasWidth/2)-((($pixel * 7) +(7 * 355))/2));
             }    
-
             if ($x){
                 $this->columnSpace = $this->columnSpace + $pixel + 355;
             }
+        }else{
+            $this->lineSpace = 355;
+            $this->columnSpace = (($canvasWidth/2)-((($pixel *($row+1)) +($row*355))/2));
         }
     }
-    
+   
 }
