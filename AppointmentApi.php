@@ -13,13 +13,13 @@ class AppointmentApi {
             echo 'get';
             break;     
         case 'POST'://inserta
-            echo 'post';
+            $this->deleteAppointment();
             break;                
         case 'PUT'://actualiza
             echo 'put';
             break;      
         case 'DELETE'://elimina
-            $this->deleteAppointment();
+            echo 'delete';
             break;
         default://metodo NO soportado
             echo 'METODO NO SOPORTADO';
