@@ -13,7 +13,8 @@ class AppointmentApi {
             echo 'get';
             break;     
         case 'POST'://inserta
-            $this->deleteAppointment();
+            //$this->deleteAppointment();
+            $this->requestAppointment();
             break;                
         case 'PUT'://actualiza
             echo 'put';
@@ -27,7 +28,24 @@ class AppointmentApi {
         }
     }
     
-    public function deleteAppointment(){
+    function requestAppointment (){
+        if ($_GET['action'] == 'appointment'){
+            
+            $obj = json_decode( file_get_contents('php://input') );   
+            $objArr = (array)$obj;
+            
+            if (!empty($objArr)){
+                $appointmentDb = new AppointmentDB();
+                if ($appointmentDb->actionAppointment($obj))
+                    $this->response (200);
+            }
+        }else{
+           $this->response(400);
+        } 
+        
+    } 
+    
+    /*public function deleteAppointment(){
         
         if ($_GET['action'] == 'appointment'){
             
@@ -42,7 +60,7 @@ class AppointmentApi {
         }else{
            $this->response(400);
         } 
-    }  
+    }*/  
     
     function response($code=200, $status="", $message="") {
        http_response_code($code);
