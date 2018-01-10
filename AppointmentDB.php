@@ -15,7 +15,7 @@ class AppointmentDB extends PgDataBase{
         switch ($obj[0]->action){
             
             case '0':
-                echo 'nueva cita';
+                $this->save($obj);
                 break;
             
             case '1':
@@ -61,6 +61,34 @@ class AppointmentDB extends PgDataBase{
         
         return $value;
         
+    }
+    
+    function save (array $obj){
+        
+        $value = false;
+        
+        $query = "INSERT INTO Medical_Appointment (idappointment,appointmentDate, status, fk_IdPatient)";
+        $query = $query." VALUES (".$this->getNewId().",'".$obj[0]->appointmentDate."','".$obj[0]->status."',";
+        $query = $query.$obj[0]->idPatient."); commit;";
+        
+        $result = pg_query($query);
+        
+        if ($result)
+            $value = true;
+        
+        return $value;
+      
+    }
+    
+    function getNewId (){
+        
+        $query ="Select Max(idAppointment) from Medical_Appointment";
+        $result = pg_query($query);
+        
+        if ($row = pg_fetch_row($result)) {
+            $value = $row[0] +1; 
+        }
+        return $value;
     }
     
 }
