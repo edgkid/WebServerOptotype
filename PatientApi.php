@@ -23,7 +23,7 @@ class PatientApi {
             $this->getPatients();
             break;     
         case 'POST'://inserta
-            echo'post';
+            $this->requestPatientByPost();
             break;                
         case 'PUT'://actualiza
             $this->putPatients();
@@ -41,7 +41,6 @@ class PatientApi {
        if ($_GET['action'] == 'patients'){
            $db = new PatientDB();
            if(isset($_GET['id'])){
-               //--------
                echo json_encode($response,JSON_PRETTY_PRINT);
             }else{
                $response = $db ->getPatientsForToday();
@@ -52,6 +51,23 @@ class PatientApi {
        }
        
     }
+    
+     function requestPatientByPost (){
+        if ($_GET['action'] == 'patients'){
+            
+            $obj = json_decode( file_get_contents('php://input') );   
+            $objArr = (array)$obj;
+            
+            if (!empty($objArr)){
+                $patientDb = new PatientDB();
+                $response = $patientDb->actionPatient($obj);
+                echo json_encode($response,JSON_PRETTY_PRINT);
+            }
+        }else{
+           $this->response(400);
+        } 
+        
+    } 
     
     
     function putPatients(){

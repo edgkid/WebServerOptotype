@@ -17,6 +17,33 @@ class PatientDB extends PgDataBase {
         parent::__construct();
     }
     
+    public function actionPatient (array $obj){
+        
+         $value = array();
+        
+        switch ($obj[0]->action){
+            
+            case '0':
+                echo "create";
+                break;
+            
+            case '1':
+                echo "update";
+                break;
+            
+            case '2':
+                echo "delete";
+                break;
+            
+            case '3':
+                $value = $this->getSomePatient($obj);
+                break;
+        }
+        
+        return $value;
+       
+    }
+    
     /**
      * This function find the Patients for today
      * @return type
@@ -41,6 +68,33 @@ class PatientDB extends PgDataBase {
         }
         
         return $data;
+    }
+    
+    public function getSomePatient(array $obj){
+        
+        $data = array();
+        $query =" SELECT pa.idPatient as idPatient, pa.firstName as firstName, pa.lastName as lastName,". 
+                "        pa.middleName as middleName, pa.maidenName as maidenName,".
+		"       (extract(year from  current_timestamp) - extract(year from pa.birthDay)) as yearsOld,".
+                "        pa.photo as image".
+                " FROM Patient pa, Medical_Appointment ma".
+                " WHERE pa.idPatient = ma.fk_idPatient".
+                "       AND ma.status != 'N'".
+                "       AND (Lower(pa.firstName) LIKE Lower('%".$obj[0]->patient."%')".
+                "            OR Lower(pa.LastName) LIKE Lower('%".$obj[0]->patient."%')".
+                "            OR Lower(pa.MiddleName) LIKE Lower('%".$obj[0]->patient."%')".
+                "            OR Lower(pa.MaidenName) LIKE Lower('%".$obj[0]->patient."%'))".
+                "       AND ma.appointmentdate= (SELECT max (appointmentdate) FROM Medical_Appointment)";
+        
+        //echo $query;
+        
+        $patient = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+       
+        while ($line = pg_fetch_array($patient, null, PGSQL_ASSOC)) {
+            $data []= array('idPatient'=>$line['idpatient'],'firstName'=>$line['firstname'],'middleName'=>$line['middlename'],'lastName'=>$line['lastname'],'maidenName'=>$line['maidenname'],'yearsOld'=>$line['yearsold'],'image'=> base64_encode(pg_unescape_bytea($line['image'])));
+        }
+        
+        return $data;   
     }
     
     
