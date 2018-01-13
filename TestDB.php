@@ -1,11 +1,41 @@
 <?php
 
 require_once 'PgDataBase.php';
+require_once 'OptometricTest.php';
+
 
 class TestDB extends PgDataBase{
     
     function __construct() {
         parent::__construct();
+    }
+    
+    function processDataMedicalTest(array $obj){
+        
+        switch ($obj[0]->action){
+            
+            case '0':
+                $this->save($obj);
+                break;
+            
+            case '1':
+                echo "Consultar datos de interacción";
+                break;
+            
+            case '2':
+                echo "Actualizar datos de interacción";
+                break;
+            
+            case '3':
+                echo 'eliminar datos de interacion';
+                break;
+            
+            case '4':
+                //$this->optometricTest($obj);
+                $this->newTest($obj, "L");
+                break;
+        }
+        
     }
     
     public function save (array $obj){
@@ -94,6 +124,34 @@ class TestDB extends PgDataBase{
         }
             
         return $value;
+    }
+    
+    private function optometricTest(array $obj){
+        
+        /*if ($_GET['action'] == 'test'){
+           
+           $obj = json_decode( file_get_contents('php://input') );   
+           $objArr = (array)$obj;
+           $this->newTest($objArr, "L");
+       }else{
+           $this->response(400);
+       }*/
+        
+        $this->newTest($obj[0], "L");
+        
+    }
+    
+    private function newTest($objArr, $eye){
+        
+        $pixelArray = array();
+        
+        $optometricCard = new OptometricTest('prueba');
+        $optometricCard->setDistance($objArr[0]->distance);
+        $optometricCard->setTestCode($eye);
+        $pixelArray = $optometricCard->findInteractionData($objArr[0]->patientId);
+        $optometricCard->resizeImage($optometricCard->getHigh(),$optometricCard->getWidth(),$optometricCard->getTestCode());
+        $optometricCard->newOptometricCard($optometricCard->getInteraction(),$optometricCard->getTestCode(), $optometricCard->getWidth(), $optometricCard->getHigh(), $pixelArray);
+        
     }
         
 }

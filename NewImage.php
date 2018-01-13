@@ -13,7 +13,6 @@ class NewImage {
      
     }
 
- 
     function getOptotypePath() {
         return $this->optotypePath;
     }
@@ -73,10 +72,6 @@ class NewImage {
                 
                 $imageOptotype = $interactionElements[$position];
                 $this->insertOptotypeInTest($testCode, $imageOptotype, $canvasWidth, $canvasHeigh, $pixelArray[$row-1], $y, $x, ($row-1));
-                //echo "inserto ".$imageOptotype." en ".$row.".".$column." a ".$pixelArray[$row-1]."X".$pixelArray[$row-1]."\n"; 
-                
-                //echo "Fila: ".$row." ubicar x= ".(($canvasWidth/2)-($pixelArray[$row-1]/2))."\n";
-                
                 $column ++;
                 $position ++;
                 $y = false;

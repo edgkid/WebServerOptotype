@@ -1,7 +1,7 @@
 <?php
 
 require_once 'TestDB.php';
-require_once 'OptometricTest.php';
+//require_once 'OptometricTest.php';
 
 class TestApi{
     
@@ -11,11 +11,12 @@ class TestApi{
         $method = $_SERVER['REQUEST_METHOD'];
         switch ($method) {
         case 'GET'://consulta
-            $this->optometricTest();
+            //$this->optometricTest();
+            echo 'get';
             break;     
         case 'POST'://inserta
-            $this->saveTest();
-            echo 'post';
+            //$this->saveTest();
+            $this->RequestTest();
             break;                
         case 'PUT'://actualiza
             echo 'put';
@@ -29,9 +30,9 @@ class TestApi{
         }
     }
     
-    public function saveTest(){
+    public function RequestTest(){
         
-        if ($_GET['action'] == 'test'){
+        /*if ($_GET['action'] == 'test'){
             
             $obj = json_decode( file_get_contents('php://input') );   
             $objArr = (array)$obj;
@@ -42,7 +43,20 @@ class TestApi{
             }
         }else{
            $this->response(400);
-        } 
+        } */
+        
+        if ($_GET['action'] == 'test'){
+            
+            $obj = json_decode( file_get_contents('php://input') );   
+            $objArr = (array)$obj;
+            
+            if (!empty($objArr)){
+                $db = new TestDB();
+                $response = $db->processDataMedicalTest($obj);
+            }
+        }else{
+           $this->response(400);
+        }
     }  
     
      /**
@@ -62,7 +76,7 @@ class TestApi{
     /**
      * 
      */
-    function optometricTest(){
+    /*function optometricTest(){
         
         if ($_GET['action'] == 'test'){
            
@@ -86,7 +100,7 @@ class TestApi{
         $optometricCard->resizeImage($optometricCard->getHigh(),$optometricCard->getWidth(),$optometricCard->getTestCode());
         $optometricCard->newOptometricCard($optometricCard->getInteraction(),$optometricCard->getTestCode(), $optometricCard->getWidth(), $optometricCard->getHigh(), $pixelArray);
         
-    }
+    }*/
     
     
 }
