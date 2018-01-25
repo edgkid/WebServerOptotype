@@ -126,18 +126,39 @@ class TestDB extends PgDataBase{
         return $value;
     }
     
-    private function optometricTest(array $obj){
+    private function saveNewTest($testCode){
         
-        /*if ($_GET['action'] == 'test'){
-           
-           $obj = json_decode( file_get_contents('php://input') );   
-           $objArr = (array)$obj;
-           $this->newTest($objArr, "L");
-       }else{
-           $this->response(400);
-       }*/
+        $directory="OptometricCard";
+        $path = ""; 
+        $count = 0;
         
-        $this->newTest($obj[0], "L");
+        $files = opendir($directory);
+        
+        while ($file = readdir($files)){
+    
+            if ($count >1){
+                $path = $directory."/".$file;
+                $name = explode(".", $file);
+                $bytesFile = file_get_contents($path);
+                $bytesFile = pg_escape_bytea($bytesFile);
+                if ($testCode == $name[0])
+                {
+                    echo $name[0];
+                    $query = "INSERT INTO SUMMARY_TEST (summarycode, imagetest) VALUES ("."'";
+                    $query = $query.$testCode."','".$bytesFile."'); commit;";
+                    
+                    $result = pg_query($query);
+                
+                    if($result)
+                        echo 'exito al actualizar'.$name[0]."</br>";
+                    else 
+                        echo 'fallo al actualizar'.$name[0]."</br>";
+                    
+                    break;
+                }
+            }
+            $count ++;
+        }
         
     }
     
@@ -152,6 +173,7 @@ class TestDB extends PgDataBase{
         $optometricCard->resizeImage($optometricCard->getHigh(),$optometricCard->getWidth(),$optometricCard->getTestCode());
         $optometricCard->newOptometricCard($optometricCard->getInteraction(),$optometricCard->getTestCode(), $optometricCard->getWidth(), $optometricCard->getHigh(), $pixelArray);
         
+        $this->saveNewTest($optometricCard->getTestCode());
     }
         
 }
