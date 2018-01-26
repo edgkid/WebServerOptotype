@@ -143,16 +143,15 @@ class TestDB extends PgDataBase{
                 $bytesFile = pg_escape_bytea($bytesFile);
                 if ($testCode == $name[0])
                 {
-                    echo $name[0];
                     $query = "INSERT INTO SUMMARY_TEST (summarycode, imagetest) VALUES ("."'";
                     $query = $query.$testCode."','".$bytesFile."'); commit;";
                     
                     $result = pg_query($query);
                 
                     if($result)
-                        echo 'exito al actualizar'.$name[0]."</br>";
+                        echo 'exito al actualizar'.$testCode."</br>";
                     else 
-                        echo 'fallo al actualizar'.$name[0]."</br>";
+                        echo 'fallo al actualizar'.$testCode."</br>";
                     
                     break;
                 }
@@ -160,6 +159,69 @@ class TestDB extends PgDataBase{
             $count ++;
         }
         
+    }
+    
+    private function saveOptotypeByNewTest($testCode){
+        
+       $query = "";
+       $optometricTest = $this->getNewTest($testCode);
+       $optotypes = $this->getOptotypes($testCode);
+       
+       foreach ($optotypes as $value){
+
+            $query = $query." INSERT INTO TEST_BY_SUMMARY (fk_idSummary, fk_idOptotypeTest) VALUES (";
+            $query = $query.$optometricTest.",".$value."); ";
+       }
+       
+       $query = $query ." commit;";
+       
+       $result = pg_query($query);
+                
+        if($result)
+            echo 'exito al guardar '.$testCode."</br>";
+        else 
+            echo 'fallo al guardar '.$testCode."</br>";
+       
+        
+    }
+    
+    private function getNewTest($testCode){
+        
+        $value = "";
+        $query =    "   SELECT idSummary".
+                    "   FROM Summary_Test".
+                    "   WHERE summaryCode = '".$testCode."'";
+        
+        $result = pg_query($query) or die('La consulta en getNewTest fallo: ' . pg_last_error());
+       
+        if ($row = pg_fetch_row($result)) {
+           
+            $value = $row[0]; 
+        }
+            
+        return $value;
+        
+    }
+    
+    private function getOptotypes ($testCode){
+        
+        $data = array();
+        $count = 0;
+        $query =    " SELECT idOptotypetest".
+                    " FROM Test, optotype_test, optotype". 
+                    " WHERE testCode = '".$testCode."'".
+                    "       AND fk_idTest = idTest".
+                    "       AND fk_idOptotype = idOptotype";
+        
+        $result = pg_query($query) or die('La consulta en getOptotypes fallo: ' . pg_last_error());
+
+        while ($row = pg_fetch_row($result)) {
+           
+            $data[$count] = $row[0];
+            $count ++;
+        }
+            
+        return $data;
     }
     
     private function newTest($objArr, $eye){
@@ -174,6 +236,7 @@ class TestDB extends PgDataBase{
         $optometricCard->newOptometricCard($optometricCard->getInteraction(),$optometricCard->getTestCode(), $optometricCard->getWidth(), $optometricCard->getHigh(), $pixelArray);
         
         $this->saveNewTest($optometricCard->getTestCode());
+        $this->saveOptotypeByNewTest($optometricCard->getTestCode());
     }
         
 }
