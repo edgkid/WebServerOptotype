@@ -61,8 +61,8 @@ class NewImage {
         
         
         $pixelArray = array_reverse ( $pixelArray);
-        echo "\n".count($interactionElements)."\n";
-        echo count($pixelArray)."\n";
+        //echo "\n".count($interactionElements)."\n";
+        //echo count($pixelArray)."\n";
         
         while ($row <= $totalRow){
             while ($column <= $totalColumn){

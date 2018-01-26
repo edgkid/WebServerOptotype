@@ -34,7 +34,7 @@ class sizeImage {
    /*metodo para calcular el tamaño de cada optotipo segun reglon en la carta optometrica*/
    function findSizeForOptotypeInCM(){
        
-       echo $this->distance."\n";
+       //echo $this->distance."\n";
        
        $position = 0;
        $arcMin = 1;
@@ -46,7 +46,7 @@ class sizeImage {
        $sizeArray = count($this->avList);
        
        while ($position < $sizeArray ){
-           echo $this->avList[$position]."\n";
+           //echo $this->avList[$position]."\n";
            
            $avMin = $arcMin/$this->avList[$position];//Av in arc min
            $avGrade = $avMin * ($arcMin/$min);//Av in Grade

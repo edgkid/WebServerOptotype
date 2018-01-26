@@ -12,6 +12,8 @@ class TestDB extends PgDataBase{
     
     function processDataMedicalTest(array $obj){
         
+        $response = "";
+        
         switch ($obj[0]->action){
             
             case '0':
@@ -31,10 +33,11 @@ class TestDB extends PgDataBase{
                 break;
             
             case '4':
-                //$this->optometricTest($obj);
-                $this->newTest($obj, "L");
+                $response = $this->newTest($obj, "L");
                 break;
         }
+        
+        return $response;
         
     }
     
@@ -148,10 +151,10 @@ class TestDB extends PgDataBase{
                     
                     $result = pg_query($query);
                 
-                    if($result)
+                    /*if($result)
                         echo 'exito al actualizar'.$testCode."</br>";
                     else 
-                        echo 'fallo al actualizar'.$testCode."</br>";
+                        echo 'fallo al actualizar'.$testCode."</br>";*/
                     
                     break;
                 }
@@ -177,10 +180,10 @@ class TestDB extends PgDataBase{
        
        $result = pg_query($query);
                 
-        if($result)
+        /*if($result)
             echo 'exito al guardar '.$testCode."</br>";
         else 
-            echo 'fallo al guardar '.$testCode."</br>";
+            echo 'fallo al guardar '.$testCode."</br>";*/
        
         
     }
@@ -224,9 +227,30 @@ class TestDB extends PgDataBase{
         return $data;
     }
     
+    function getSummaryTestByCode($testCode){
+        
+        $data = array();
+        
+        $query ="   SELECT idsummary, summaryCode, imagetest".
+                "   FROM summary_test".
+                "   WHERE summaryCode = '".$testCode."'";
+        
+        $patient = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+       
+        while ($line = pg_fetch_array($patient, null, PGSQL_ASSOC)) {
+            $data []= array('idSummary'=>$line['idsummary'],'summaryCode'=>$line['summarycode'],'imageTest'=> base64_encode(pg_unescape_bytea($line['imagetest'])));
+        }
+        
+        return $data;
+      
+    }
+    
     private function newTest($objArr, $eye){
         
+        $response = "";
+        
         $pixelArray = array();
+        $response = "";
         
         $optometricCard = new OptometricTest('prueba');
         $optometricCard->setDistance($objArr[0]->distance);
@@ -237,6 +261,10 @@ class TestDB extends PgDataBase{
         
         $this->saveNewTest($optometricCard->getTestCode());
         $this->saveOptotypeByNewTest($optometricCard->getTestCode());
+        
+        $response = $this->getSummaryTestByCode($optometricCard->getTestCode());
+        
+        return $response;
     }
         
 }

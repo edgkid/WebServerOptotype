@@ -32,19 +32,6 @@ class TestApi{
     
     public function RequestTest(){
         
-        /*if ($_GET['action'] == 'test'){
-            
-            $obj = json_decode( file_get_contents('php://input') );   
-            $objArr = (array)$obj;
-            
-            if (!empty($objArr)){
-                $db = new TestDB();
-                $response = $db->save($objArr); 
-            }
-        }else{
-           $this->response(400);
-        } */
-        
         if ($_GET['action'] == 'test'){
             
             $obj = json_decode( file_get_contents('php://input') );   
@@ -53,6 +40,7 @@ class TestApi{
             if (!empty($objArr)){
                 $db = new TestDB();
                 $response = $db->processDataMedicalTest($obj);
+                echo json_encode($response,JSON_PRETTY_PRINT);
             }
         }else{
            $this->response(400);
