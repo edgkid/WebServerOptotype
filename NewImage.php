@@ -42,10 +42,59 @@ class NewImage {
      */
     function resizeImage($heigh, $witdh, $name){
         
-        $img = imagecreate($witdh, $heigh);
+        // Valores para defnir liezo y representacón de optotipos
+        $rowId = array( 1=>"1",
+                        2=>"2", 
+                        3=>"3",
+                        4=>"4",
+                        5=>"5", 
+                        6=>"6",
+                        7=>"7",
+                        8=>"8", 
+                        9=>"9",
+                        10=>"10",
+                        11=>"11" 
+                       );
+        
+        $rowAv = array (1=>"0.1",
+                        2=>"0.13",
+                        3=>"0.17",
+                        4=>"0.2",
+                        5=>"0.25",
+                        6=>"0.33",
+                        7=>"0.4",
+                        8=>"0.5", 
+                        9=>"0.63",
+                        10=>"0.8",
+                        11=>"1.0", 
+                        );
+        $xLeft=200;
+        $y=200;
+        $spaceLine = 354 ;
+        $newWitdh = $witdh + 708;
+        $xRight = $newWitdh - $xLeft;
+       
+        $pathImage = "OptometricCard/".$name.".png";
+        
+        $img = imagecreate($newWitdh, $heigh);
+ 
+        // fondo blanco y texto azul
         imagecolorallocate($img, 255, 255, 255);
-        imagepng($img, "OptometricCard/".$name.".png");
-        imagedestroy($img);
+        $textcolor = imagecolorallocate($img, 0, 0, 0);
+
+        // escribimos identificador de filas y valor AV de los optotipos de la fila
+        
+        for ($i=1; $i<12; $i++){
+           
+            imagestring($img, 250, $xLeft, $y, $rowId[$i], $textcolor);
+            imagestring($img, 250, $xRight, $y,$rowAv[$i], $textcolor);
+            $y = $y + $spaceLine;
+        }
+
+        // Guardo la imagen
+        header("Content-type: image/png");
+        imagepng($img,$pathImage);
+        imagedestroy($img); 
 
     }
 

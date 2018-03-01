@@ -64,7 +64,7 @@ class sizeImage {
    function findSizeForOptotypeInPixel (){
        
        $value = 0; //varieble for size in pixel
-       $ppp=72;//point per inches
+       $ppp=300;//point per inches
        $pCm= 2.54; // Cm by inches
        $position = 0;
        
