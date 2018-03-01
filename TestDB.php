@@ -257,12 +257,12 @@ class TestDB extends PgDataBase{
         $optometricCard->setTestCode($eye);
         $pixelArray = $optometricCard->findInteractionData($objArr[0]->patientId);
         $optometricCard->resizeImage($optometricCard->getHigh(),$optometricCard->getWidth(),$optometricCard->getTestCode());
-        /*$optometricCard->newOptometricCard($optometricCard->getInteraction(),$optometricCard->getTestCode(), $optometricCard->getWidth(), $optometricCard->getHigh(), $pixelArray);
+        $optometricCard->newOptometricCard($optometricCard->getInteraction(),$optometricCard->getTestCode(), $optometricCard->getWidth(), $optometricCard->getHigh(), $pixelArray);
         
         $this->saveNewTest($optometricCard->getTestCode());
         $this->saveOptotypeByNewTest($optometricCard->getTestCode());
         
-        $response = $this->getSummaryTestByCode($optometricCard->getTestCode());*/
+        $response = $this->getSummaryTestByCode($optometricCard->getTestCode());
         
         return $response;
     }

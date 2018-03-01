@@ -189,6 +189,10 @@ class NewImage {
                     $this->columnSpace = (($canvasWidth/2)-((($pixel *($row+1)) +($row*355))/2));
                 else
                     $this->columnSpace = (($canvasWidth/2)-((($pixel * 7) +(7 * 355))/2));
+                
+                //Aqui muevo todos los reglones al espacion asignado para los identifiacdores
+                $this->columnSpace = $this->columnSpace + 354;
+                
             }    
             if ($x){
                 $this->columnSpace = $this->columnSpace + $pixel + 355;
@@ -196,6 +200,8 @@ class NewImage {
         }else{
             $this->lineSpace = 355;
             $this->columnSpace = (($canvasWidth/2)-((($pixel *($row+1)) +($row*355))/2));
+            //Aqui muevo todos los reglones al espacion asignado para los identifiacdores
+            $this->columnSpace = $this->columnSpace + 354;
         }
     }
    
