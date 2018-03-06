@@ -4,7 +4,7 @@
     require_once 'OptotypeApi.php';
     require_once 'TestApi.php';
     require_once 'AppointmentApi.php';
-
+    require_once 'AvResultApi.php';
     
     if ($_GET['action'] == 'updateKids'){
         $update = new PatientApi();
@@ -39,5 +39,11 @@
     if ($_GET['action'] == 'appointment'){
         $appointment = new AppointmentApi();
         $appointment->API();
+    }
+    
+    if ($_GET['action'] == 'avResult'){
+        
+        $avResult = new AvResultApi();
+        $avResult->API();
     }
     
