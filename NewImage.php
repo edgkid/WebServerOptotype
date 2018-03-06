@@ -68,11 +68,11 @@ class NewImage {
                         10=>"0.8",
                         11=>"1.0", 
                         );
-        $xLeft=200;
+        $xLeft=200; // tamaño para detalle de identificador de fila
         $y=200;
         $spaceLine = 354 ;
         $newWitdh = $witdh + 708;
-        $xRight = $newWitdh - $xLeft;
+        $xRight = $newWitdh - $xLeft;// tamaño para espaciado de detalle de Av
        
         $pathImage = "OptometricCard/".$name.".png";
         
