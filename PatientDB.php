@@ -55,7 +55,8 @@ class PatientDB extends PgDataBase {
                "           pat.maidenName as maidenName ,".
                "    (extract(year from  current_timestamp) - extract(year from pat.birthDay)) as yearsOld,".
                "    pat.photo as image,". 
-               "    pat.fk_idUser as fkUSer".
+               "    pat.fk_idUser as fkUSer,".
+               "    mea.appointmentdate as nextAppointmentDate".
                "  FROM Patient pat, Medical_Appointment mea".
                "  WHERE pat.idPatient = mea.fk_idPatient".
                "        AND to_char(mea.appointmentdate, 'dd/mm/yyyy')= to_char((Current_Timestamp :: date), 'dd/mm/yyyy')";
@@ -64,7 +65,7 @@ class PatientDB extends PgDataBase {
        
         while ($line = pg_fetch_array($patient, null, PGSQL_ASSOC)) {
             //$data[] = $line;
-            $data []= array('idPatient'=>$line['idpatient'],'firstName'=>$line['firstname'],'middleName'=>$line['middlename'],'lastName'=>$line['lastname'],'maidenName'=>$line['maidenname'],'yearsOld'=>$line['yearsold'],'image'=> base64_encode(pg_unescape_bytea($line['image'])),'fkUSer'=>$line['fkuser']);
+            $data []= array('idPatient'=>$line['idpatient'],'firstName'=>$line['firstname'],'middleName'=>$line['middlename'],'lastName'=>$line['lastname'],'maidenName'=>$line['maidenname'],'yearsOld'=>$line['yearsold'],'image'=> base64_encode(pg_unescape_bytea($line['image'])),'fkUSer'=>$line['fkuser'],'nextAppointmentDate'=>$line['nextappointmentdate']);
         }
         
         return $data;
