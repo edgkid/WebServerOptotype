@@ -14,7 +14,7 @@ class AvResultDB extends PgDataBase {
     public function getResultsForToday (){
         
         $data = array();
-        $query = "  SELECT distinct (pat.idPatient) as idPatient, mea.appointmentDate as lastDate,". 
+        $query = "  SELECT distinct (pat.idPatient) as idPatient,avr.idAvResult as idAvResult, mea.appointmentDate as lastDate,". 
                  "                   avr.eyeRight as AvRight, avr.eyeLeft as AvLeft, dia.description as Description,". 
                  "           sub.center as Center, sub.sustain as Sustain, sub.maintain as Maintain".
                  "  FROM Patient pat, Medical_Appointment mea, TEST tes,". 
@@ -40,7 +40,7 @@ class AvResultDB extends PgDataBase {
        
         while ($line = pg_fetch_array($avResult, null, PGSQL_ASSOC)) {
             //$data[] = $line;
-            $data []= array('idPatient'=>$line['idpatient'],'lastDate'=>$line['lastdate'],'avRight'=>$line['avright'],'avLeft'=>$line['avleft'],'description'=>$line['description'],'center'=>$line['center'],'sustain'=>$line['sustain'],'maintain'=>$line['maintain']);
+            $data []= array('idPatient'=>$line['idpatient'],'idAvResult'=>$line['idavresult'],'lastDate'=>$line['lastdate'],'avRight'=>$line['avright'],'avLeft'=>$line['avleft'],'description'=>$line['description'],'center'=>$line['center'],'sustain'=>$line['sustain'],'maintain'=>$line['maintain']);
         }
         
         return $data;
