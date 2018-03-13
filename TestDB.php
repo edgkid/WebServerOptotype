@@ -1,7 +1,10 @@
 <?php
 
 require_once 'PgDataBase.php';
-require_once 'OptometricTest.php';
+require_once 'TestParameter.php';
+require_once 'ImageSize.php';
+require_once 'PrintSize.php';
+require_once 'Canvas.php';
 
 
 class TestDB extends PgDataBase{
@@ -33,7 +36,8 @@ class TestDB extends PgDataBase{
                 break;
             
             case '4':
-                $response = $this->newTest($obj, "L");
+                //$response = $this->newTest($obj, "L");
+                $response = $this->newTest($obj);
                 break;
         }
         
@@ -245,7 +249,7 @@ class TestDB extends PgDataBase{
       
     }
     
-    private function newTest($objArr, $eye){
+    /*private function newTest($objArr, $eye){
         
         $response = "";
         
@@ -265,6 +269,68 @@ class TestDB extends PgDataBase{
         $response = $this->getSummaryTestByCode($optometricCard->getTestCode());
         
         return $response;
+    }*/
+    
+    function newTest($objArr){
+        
+        $avMin = 0;
+        $avGrade = 0;
+        $avRadians = 0;
+        $e = 0;
+        $h = 0;
+        $position = 0;
+        $nextElement = 0;
+        $hPixel = 0;
+        $x = 0;
+        $y = 0;
+        $xPixel = 0;
+        $yPixel = 0;
+
+        $avList = array();
+        $avPixels = array();
+        $avPrints = array();
+
+        $testParameter = new TestParameter($objArr[0]->distance);
+        $PrintSize = new PrintSize();
+        $ImageSize = new ImageSize($testParameter->getPppCalculos());
+        $avList = $testParameter->getAvList();
+        
+        $sizeArray = count($avList);
+
+        //// defino el tamañod elos elementos para cada renglon
+        echo "Tamaño de impresion original"."<br>";
+        while ($position < $sizeArray ){
+            
+            $avMin = $PrintSize->getAvMinute($avList[$position]);
+            $avGrade = $PrintSize->getAvGrade($avMin);
+            $avRadians = $PrintSize ->getAvRadian($avGrade);
+            $e = $PrintSize->getSizeMinDetailmm($avRadians, $testParameter->getDistance());
+            $h = $PrintSize->getSizeElement($e);
+            $h = $PrintSize->getSizeElementCm($h);
+            $hPixel = $ImageSize->getSizeInPixel($h);
+            
+            $avPrints[$nextElement] = $h;
+            $avPixels[$nextElement] = $hPixel;
+
+            $position ++;
+            $nextElement++;
+        }
+        
+        ///// Defino alto y ancho del lienzo que sera la carta
+        $y = $PrintSize->getCanvasHight($avPrints);
+        $x = $PrintSize->getCanvasWith($avPrints);
+        $yPixel = $ImageSize->getSizeInPixel($y);
+        $xPixel = $ImageSize->getSizeInPixel($x);
+
+        ///// esto debe ser consultado
+        $avElements = array('avion_1','barco_1','botella_1','camion_1','circulo_1','corazon_1','estrella_1');
+        
+        ///// voy a crear el lienzo base para la carta
+        $canvas = new Canvas($xPixel, $yPixel, $avPixels, $avElements, "testPrueba");
+        $canvas->newCanvasImage();
+        $canvas->canvasToOptometricCard();
+        
     }
+    
         
 }
