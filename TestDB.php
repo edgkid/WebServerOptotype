@@ -273,6 +273,7 @@ class TestDB extends PgDataBase{
     
     function newTest($objArr){
         
+        $nameTest = "";
         $avMin = 0;
         $avGrade = 0;
         $avRadians = 0;
@@ -321,15 +322,73 @@ class TestDB extends PgDataBase{
         $x = $PrintSize->getCanvasWith($avPrints);
         $yPixel = $ImageSize->getSizeInPixel($y);
         $xPixel = $ImageSize->getSizeInPixel($x);
-
+        
+        // tambien debo buscar el Test Code correspondiente
+        $nameTest = $this->getNameNewTest($objArr[0]->patientId);
+        
         ///// esto debe ser consultado
-        $avElements = array('avion_1','barco_1','botella_1','camion_1','circulo_1','corazon_1','estrella_1');
+        //$avElements = array('avion_1','barco_1','botella_1','camion_1','circulo_1','corazon_1','estrella_1');
+        $avElements = $this->getElementsInteraction($objArr[0]->patientId, $nameTest);
         
         ///// voy a crear el lienzo base para la carta
-        $canvas = new Canvas($xPixel, $yPixel, $avPixels, $avElements, "testPrueba");
+        $canvas = new Canvas($xPixel, $yPixel, $avPixels, $avElements, $nameTest);
         $canvas->newCanvasImage();
         $canvas->canvasToOptometricCard();
         
+    }
+    
+    private function getNameNewTest ($patientId){
+        
+        $date = getdate();
+        $value = "";
+        $today = "'".$date['mday']."/".$date['mon']."/".$date['year']."'";
+
+        $query = "  SELECT DISTINCT(te.testCode) ". 
+                    " FROM Patient pa, Medical_appointment ma, Test te, Optotype_Test ot, Optotype op ".
+                    " WHERE pa.idPatient = ma.fk_idPatient ".
+                        " AND ma.idAppointment = te.fk_idAppointment ".
+                        " AND te.idTest = ot.fk_idTest ".
+                        " AND ot.fk_idOptotype = op.idOptotype ".
+                        " AND pa.idPatient = ".$patientId.
+                        " AND ma.appointmentdate = to_date(".$today.",'dd/mm/yyyy')";  
+        
+        $db = new PgDataBase();
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+       
+        if ($row = pg_fetch_row($result)) {
+            $value = $row[0];
+        } 
+        
+        return $value;
+    }
+    
+    private function getElementsInteraction ($patientId, $testCode){
+        
+        $date = getdate();
+        $position = 0;
+        $array = array();
+        $today = "'".$date['mday']."/".$date['mon']."/".$date['year']."'";
+        
+        $query = "  SELECT op.optotypeCode". 
+                    " FROM Patient pa, Medical_appointment ma, Test te, Optotype_Test ot, Optotype op ".
+                    " WHERE pa.idPatient = ma.fk_idPatient ".
+                        " AND ma.idAppointment = te.fk_idAppointment ".
+                        " AND te.idTest = ot.fk_idTest ".
+                        " AND ot.fk_idOptotype = op.idOptotype ".
+                        " AND pa.idPatient = ".$patientId.
+                        " AND ma.appointmentdate = to_date(".$today.",'dd/mm/yyyy')".
+                        " AND te.testCode LIKE '%".$testCode."%'";  
+        
+        $db = new PgDataBase();
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+        while ($row = pg_fetch_row($result)) {
+            $array[$position] = $row [0];
+            $position ++;
+         }   
+         
+         return $array;
+         
     }
     
         
