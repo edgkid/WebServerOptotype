@@ -249,29 +249,9 @@ class TestDB extends PgDataBase{
       
     }
     
-    /*private function newTest($objArr, $eye){
-        
-        $response = "";
-        
-        $pixelArray = array();
-        $response = "";
-        
-        $optometricCard = new OptometricTest('prueba');
-        $optometricCard->setDistance($objArr[0]->distance);
-        $optometricCard->setTestCode($eye);
-        $pixelArray = $optometricCard->findInteractionData($objArr[0]->patientId);
-        $optometricCard->resizeImage($optometricCard->getHigh(),$optometricCard->getWidth(),$optometricCard->getTestCode());
-        $optometricCard->newOptometricCard($optometricCard->getInteraction(),$optometricCard->getTestCode(), $optometricCard->getWidth(), $optometricCard->getHigh(), $pixelArray);
-        
-        $this->saveNewTest($optometricCard->getTestCode());
-        $this->saveOptotypeByNewTest($optometricCard->getTestCode());
-        
-        $response = $this->getSummaryTestByCode($optometricCard->getTestCode());
-        
-        return $response;
-    }*/
-    
     function newTest($objArr){
+        
+        $response = "";
         
         $nameTest = "";
         $avMin = 0;
@@ -299,7 +279,6 @@ class TestDB extends PgDataBase{
         $sizeArray = count($avList);
 
         //// defino el tamañod elos elementos para cada renglon
-        echo "Tamaño de impresion original"."<br>";
         while ($position < $sizeArray ){
             
             $avMin = $PrintSize->getAvMinute($avList[$position]);
@@ -323,18 +302,32 @@ class TestDB extends PgDataBase{
         $yPixel = $ImageSize->getSizeInPixel($y);
         $xPixel = $ImageSize->getSizeInPixel($x);
         
+        ///// Defino alto y ancho del lienzo que sera la carta
+        $y = $PrintSize->getCanvasHight($avPrints);
+        $x = $PrintSize->getCanvasWith($avPrints);
+        $yPixel = $ImageSize->getSizeInPixel($y);
+        
         // tambien debo buscar el Test Code correspondiente
         $nameTest = $this->getNameNewTest($objArr[0]->patientId);
         
         ///// esto debe ser consultado
-        //$avElements = array('avion_1','barco_1','botella_1','camion_1','circulo_1','corazon_1','estrella_1');
         $avElements = $this->getElementsInteraction($objArr[0]->patientId, $nameTest);
-        
-        ///// voy a crear el lienzo base para la carta
+    
+        /// voy a crear el lienzo base para la carta
         $canvas = new Canvas($xPixel, $yPixel, $avPixels, $avElements, $nameTest);
         $canvas->newCanvasImage();
         $canvas->canvasToOptometricCard();
         
+        // si es necesario guardamos el nuevo text creado
+        if ($this->findingSumaryTest($nameTest) == 0 ){
+            $this->saveNewTest($nameTest);
+            $this->saveOptotypeByNewTest($nameTest);
+        }
+        
+        // retorno la imagen en un JSON
+        $response = $this->getSummaryTestByCode($nameTest);
+        
+        return $response;
     }
     
     private function getNameNewTest ($patientId){
@@ -391,5 +384,27 @@ class TestDB extends PgDataBase{
          
     }
     
+    
+    private function findingSumaryTest($testCode){
+        
+        $value = 0;
+        
+        $query = "  SELECT count(su.idsummary)as value".
+                 "  FROM SUMMARY_TEST su".
+                 "  WHERE su.summaryCode = '".$testCode."'";  
+        
+        $db = new PgDataBase();
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+        if($line = pg_fetch_assoc($result)) {
+            
+            $value = $line['value'];
+            
+        }
+
+        return $value;
+        
+        
+    }
         
 }
