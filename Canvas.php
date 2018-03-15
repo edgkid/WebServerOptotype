@@ -117,8 +117,8 @@ class Canvas {
         $canvas = $this->imagePath.$this->canvasCode.".png";
         $sizeArray = count($this->idList);
          
+         //while ($count < ($sizeArray -1)){
          while ($count < $sizeArray){
-            
              /*$this->insertElementsInCanvas($canvas,$this->elements[$position],$count, $typeElement, $typeInsert);
              $count ++;
              $position ++;
@@ -129,8 +129,9 @@ class Canvas {
              
              While ($column <= $totalColumn){
                  
-                 if ($position == count($this->elements))
-                 $position = 0;
+                 if ($position == count($this->elements)){
+                     $position = 0;
+                 }
                  
                  $this->insertElementsInCanvas($canvas,$this->elements[$position],$count, $typeElement, $typeInsert);
                  $this->setXPosition($this->xPosition + $array[$count] + 50);
@@ -140,26 +141,27 @@ class Canvas {
                  $position ++;
              }
              //$typeInsert = 0;
-             $column = 1;
-             $count ++;
+             //$column = 1;
+             //$count ++;
              
              if ( $count < 4){
-                $this->setXRow($this->xRow + 100);
+                $this->setXRow($this->xRow + 110);
                 $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 120);
+                $this->setYRow($this->yRow + $array[$count] + 90);
              }elseif($count >= 4 && $count < 7){
-                 $this->setXRow($this->xRow + 60);
+                 $this->setXRow($this->xRow + 50);
                 $this->setXPosition($this->xRow);
-                 $this->setYRow($this->yRow + $array[$count] + 100);
+                 $this->setYRow($this->yRow + $array[$count] + 80);
              }elseif($count >= 7){
                  $this->setXRow($this->xRow + 30);
                 $this->setXPosition($this->xRow);
-                 $this->setYRow($this->yRow + $array[$count] + 100);
+                 $this->setYRow($this->yRow + $array[$count] + 60);
              }
                 
              $this->setYPositon($this->yRow);
             
-             
+             $column = 1;
+             $count ++;
          }
           
      }
