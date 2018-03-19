@@ -135,14 +135,10 @@ class Canvas {
                  
                  $this->insertElementsInCanvas($canvas,$this->elements[$position],$count, $typeElement, $typeInsert);
                  $this->setXPosition($this->xPosition + $array[$count] + 50);
-                 
-                 //$typeInsert = 1;
+
                  $column ++;
                  $position ++;
              }
-             //$typeInsert = 0;
-             //$column = 1;
-             //$count ++;
              
              if ( $count < 4){
                 $this->setXRow($this->xRow + 110);
