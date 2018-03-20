@@ -108,8 +108,14 @@ class Canvas {
          
         //hay que delegar esto
         //$this->setXPosition(($this->with)/2 - 200);
-        $this->setXPosition(200);
-        $this->setYPositon(100);
+        
+        //$this->setXPosition(200);//// 5 y 6
+        //$this->setXPosition(250);//// 3 y 4
+        $this->setXPosition(300);//// 1 y 2
+        
+        //$this->setYPositon(100);//// 3, 4 ,5 ,6
+        ///$this->setYPositon(200);//// 2
+        $this->setYPositon(250);//// 1
         
         $array = $this->avPixels;
         $array = array_reverse($array);
@@ -140,20 +146,74 @@ class Canvas {
                  $position ++;
              }
              
-             if ( $count < 4){
+             //// para 5 y 6 metros
+            /*if ( $count < 4){//4 para 5 y 6 metros
                 $this->setXRow($this->xRow + 110);
                 $this->setXPosition($this->xRow);
                 $this->setYRow($this->yRow + $array[$count] + 90);
-             }elseif($count >= 4 && $count < 7){
-                 $this->setXRow($this->xRow + 50);
+             }elseif($count >= 4 && $count < 7){ 
+                $this->setXRow($this->xRow + 50);
                 $this->setXPosition($this->xRow);
-                 $this->setYRow($this->yRow + $array[$count] + 80);
-             }elseif($count >= 7){
+                $this->setYRow($this->yRow + $array[$count] + 80);
+             }elseif($count >= 7){ 
+                $this->setXRow($this->xRow + 30);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 60);
+             }*/
+             
+             /// 4 y 3
+             /*if ( $count < 2){//4 para 5 y 6 metros
+                $this->setXRow($this->xRow + 110);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 90);
+             }elseif($count >= 2 && $count < 8){
+                $this->setXRow($this->xRow + 30);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 70); 
+             }elseif($count >= 8 && $count < 10){
+                 $this->setXRow($this->xRow + 10);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 50);
+             }*/
+             
+             /// 2 
+             /*if ( $count < 1){
+                $this->setXRow($this->xRow + 130);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 150);
+             }elseif($count >= 1 && $count < 3){
+                 $this->setXRow($this->xRow + 60);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 100);
+             }elseif($count >= 3 && $count < 5){
+                 $this->setXRow($this->xRow + 40);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 70);
+             }elseif($count >= 5 && $count < 9){
+                 $this->setXRow($this->xRow + 20 );
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 50);
+             }elseif($count >= 9 && $count < 10){
+                 $this->setXRow($this->xRow);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 50);
+             }*/
+             
+             //1 metro
+             if ( $count < 1){
+                $this->setXRow($this->xRow + 130);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 220);
+             }elseif($count >= 1 && $count < 4){
                  $this->setXRow($this->xRow + 30);
                 $this->setXPosition($this->xRow);
-                 $this->setYRow($this->yRow + $array[$count] + 60);
+                $this->setYRow($this->yRow + $array[$count] + 60);
+             }elseif($count >= 4){
+                 $this->setXRow($this->xRow + 10);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 60);
              }
-                
+             
              $this->setYPositon($this->yRow);
             
              $column = 1;
@@ -240,6 +300,10 @@ class Canvas {
          $array = array_reverse($array);
          $this->setYPositon($array[$position] + $this->yPositon + $extraSpcaceY);
        
+     }
+     
+     private function canvasByOneMeter(){
+         
      }
     
 }
