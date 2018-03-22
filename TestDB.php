@@ -314,7 +314,7 @@ class TestDB extends PgDataBase{
         $avElements = $this->getElementsInteraction($objArr[0]->patientId, $nameTest);
     
         /// voy a crear el lienzo base para la carta
-        $canvas = new Canvas($xPixel, $yPixel, $avPixels, $avElements, $nameTest);
+        $canvas = new Canvas($xPixel, $yPixel, $avPixels, $avElements, $nameTest,$testParameter->getDistance());
         $canvas->newCanvasImage();
         $canvas->canvasToOptometricCard();
         

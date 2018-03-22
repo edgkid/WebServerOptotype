@@ -18,11 +18,12 @@ class Canvas {
     private $xPosition;
     private $yPositon;
     private $canvasCode;
+    private $distance;
      
     private $xRow;
     private $yRow;
      
-     function __construct($with, $height, $avPixels, $avelements, $canvasCode) {
+     function __construct($with, $height, $avPixels, $avelements, $canvasCode, $distance) {
          $this->idList =  array('uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once');
          $this->AvList = array('Av1','Av2','Av3','Av4','Av5','Av6','Av7','Av8','Av9','Av10','Av11');
          //$this->elements = array('avion_1','barco_1','botella_1','camion_1','circulo_1','corazon_1','estrella_1'); 
@@ -34,6 +35,7 @@ class Canvas {
          $this->avPixels = $avPixels;
          $this->with = $with;
          $this->height = $height;
+         $this->distance = $distance;
          $this->xPosition = 100;
          $this->yPositon = 250;
          
@@ -111,11 +113,26 @@ class Canvas {
         
         //$this->setXPosition(200);//// 5 y 6
         //$this->setXPosition(250);//// 3 y 4
-        $this->setXPosition(300);//// 1 y 2
+        
         
         //$this->setYPositon(100);//// 3, 4 ,5 ,6
-        ///$this->setYPositon(200);//// 2
-        $this->setYPositon(250);//// 1
+        ///
+        
+        if ($this->distance == 2 ){
+            $this->setXPosition(300);//// 1 y 2
+            //$this->setYPositon(250);//// 1
+            $this->setYPositon(200);//// 2
+        }
+        
+        if ($this->distance >= 3 || $this->distance <=4){
+            $this->setXPosition(250);//// 3 y 4
+            $this->setYPositon(150);//// 3, 4 
+        }
+        
+        if ($this->distance >= 5 || $this->distance <=6){
+            $this->setXPosition(200);//// 5 y 6
+            $this->setYPositon(100);
+        }
         
         $array = $this->avPixels;
         $array = array_reverse($array);
@@ -147,74 +164,14 @@ class Canvas {
              }
              
              //// para 5 y 6 metros
-            /*if ( $count < 4){//4 para 5 y 6 metros
-                $this->setXRow($this->xRow + 110);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 90);
-             }elseif($count >= 4 && $count < 7){ 
-                $this->setXRow($this->xRow + 50);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 80);
-             }elseif($count >= 7){ 
-                $this->setXRow($this->xRow + 30);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 60);
-             }*/
+            $this->canvasByFiveAndSixMeter($count, $array);
              
-             /// 4 y 3
-             /*if ( $count < 2){//4 para 5 y 6 metros
-                $this->setXRow($this->xRow + 110);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 90);
-             }elseif($count >= 2 && $count < 8){
-                $this->setXRow($this->xRow + 30);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 70); 
-             }elseif($count >= 8 && $count < 10){
-                 $this->setXRow($this->xRow + 10);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 50);
-             }*/
+             
+             //// 3 y 4
+             //$this->canvasByTrheAndFourMeter($count, $array);
              
              /// 2 
-             /*if ( $count < 1){
-                $this->setXRow($this->xRow + 130);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 150);
-             }elseif($count >= 1 && $count < 3){
-                 $this->setXRow($this->xRow + 60);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 100);
-             }elseif($count >= 3 && $count < 5){
-                 $this->setXRow($this->xRow + 40);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 70);
-             }elseif($count >= 5 && $count < 9){
-                 $this->setXRow($this->xRow + 20 );
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 50);
-             }elseif($count >= 9 && $count < 10){
-                 $this->setXRow($this->xRow);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 50);
-             }*/
-             
-             //1 metro
-             if ( $count < 1){
-                $this->setXRow($this->xRow + 130);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 220);
-             }elseif($count >= 1 && $count < 4){
-                 $this->setXRow($this->xRow + 30);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 60);
-             }elseif($count >= 4){
-                 $this->setXRow($this->xRow + 10);
-                $this->setXPosition($this->xRow);
-                $this->setYRow($this->yRow + $array[$count] + 60);
-             }
-             
-             $this->setYPositon($this->yRow);
+             //$this->canvasByTwoMeter($count, $array);
             
              $column = 1;
              $count ++;
@@ -302,7 +259,69 @@ class Canvas {
        
      }
      
-     private function canvasByOneMeter(){
+     private function canvasByTwoMeter($count, $array){
+         
+         if ( $count < 1){
+                $this->setXRow($this->xRow + 130);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 150);
+             }elseif($count >= 1 && $count < 3){
+                 $this->setXRow($this->xRow + 60);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 100);
+             }elseif($count >= 3 && $count < 5){
+                 $this->setXRow($this->xRow + 40);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 70);
+             }elseif($count >= 5 && $count < 9){
+                 $this->setXRow($this->xRow + 20 );
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 50);
+             }elseif($count >= 9 && $count < 10){
+                 $this->setXRow($this->xRow);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 50);
+             }
+       
+             
+        $this->setYPositon($this->yRow);   
+     }
+     
+     private function canvasByTrheAndFourMeter($count, $array){
+         if ( $count < 2){//4 para 5 y 6 metros
+            $this->setXRow($this->xRow + 110);
+            $this->setXPosition($this->xRow);
+            $this->setYRow($this->yRow + $array[$count] + 90);
+         }elseif($count >= 2 && $count < 8){
+            $this->setXRow($this->xRow + 30);
+            $this->setXPosition($this->xRow);
+            $this->setYRow($this->yRow + $array[$count] + 70); 
+         }elseif($count >= 8 && $count < 10){
+             $this->setXRow($this->xRow + 10);
+            $this->setXPosition($this->xRow);
+            $this->setYRow($this->yRow + $array[$count] + 50);
+         }
+
+         $this->setYPositon($this->yRow); 
+     }
+     
+     private function canvasByFiveAndSixMeter($count, $array){
+         
+         if ( $count < 4){//4 para 5 y 6 metros
+                $this->setXRow($this->xRow + 110);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 90);
+             }elseif($count >= 4 && $count < 7){ 
+                $this->setXRow($this->xRow + 50);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 80);
+             }elseif($count >= 7){ 
+                $this->setXRow($this->xRow + 30);
+                $this->setXPosition($this->xRow);
+                $this->setYRow($this->yRow + $array[$count] + 60);
+             }
+             
+          $this->setYPositon($this->yRow);
          
      }
     
