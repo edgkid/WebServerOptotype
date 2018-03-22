@@ -107,16 +107,6 @@ class Canvas {
          $typeInsert = 1;
          $totalColumn = 4;
          $column = 1;
-         
-        //hay que delegar esto
-        //$this->setXPosition(($this->with)/2 - 200);
-        
-        //$this->setXPosition(200);//// 5 y 6
-        //$this->setXPosition(250);//// 3 y 4
-        
-        
-        //$this->setYPositon(100);//// 3, 4 ,5 ,6
-        ///
         
         if ($this->distance == 2 ){
             $this->setXPosition(300);//// 1 y 2
@@ -124,12 +114,12 @@ class Canvas {
             $this->setYPositon(200);//// 2
         }
         
-        if ($this->distance >= 3 || $this->distance <=4){
+        if ($this->distance >= 3 && $this->distance <=4){
             $this->setXPosition(250);//// 3 y 4
             $this->setYPositon(150);//// 3, 4 
         }
         
-        if ($this->distance >= 5 || $this->distance <=6){
+        if ($this->distance >= 5 && $this->distance <=6){
             $this->setXPosition(200);//// 5 y 6
             $this->setYPositon(100);
         }
@@ -163,15 +153,17 @@ class Canvas {
                  $position ++;
              }
              
-             //// para 5 y 6 metros
-            $this->canvasByFiveAndSixMeter($count, $array);
              
+             if ($this->distance == 2){
+                $this->canvasByTwoMeter($count, $array);
+             }
              
-             //// 3 y 4
-             //$this->canvasByTrheAndFourMeter($count, $array);
-             
-             /// 2 
-             //$this->canvasByTwoMeter($count, $array);
+            if ($this->distance >= 3 && $this->distance <= 4) {
+                $this->canvasByTrheAndFourMeter($count, $array);
+            }
+            if ($this->distance >= 5 && $this->distance <= 6) {
+                $this->canvasByFiveAndSixMeter($count, $array);
+            }
             
              $column = 1;
              $count ++;
