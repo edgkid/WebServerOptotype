@@ -1,7 +1,12 @@
 <?php
 
 require_once 'PgDataBase.php';
-require_once 'OptometricTest.php';
+
+require_once 'ParameterForCard.php';
+require_once 'PrintSize.php';
+require_once 'ImageSize.php';
+require_once 'Canvas.php';
+//require_once 'CardConstructor.php';
 
 
 class TestDB extends PgDataBase{
@@ -33,7 +38,7 @@ class TestDB extends PgDataBase{
                 break;
             
             case '4':
-                $response = $this->newTest($obj, "L");
+                $response = $this->newTest($obj);
                 break;
         }
         
@@ -150,12 +155,6 @@ class TestDB extends PgDataBase{
                     $query = $query.$testCode."','".$bytesFile."'); commit;";
                     
                     $result = pg_query($query);
-                
-                    /*if($result)
-                        echo 'exito al actualizar'.$testCode."</br>";
-                    else 
-                        echo 'fallo al actualizar'.$testCode."</br>";*/
-                    
                     break;
                 }
             }
@@ -179,12 +178,6 @@ class TestDB extends PgDataBase{
        $query = $query ." commit;";
        
        $result = pg_query($query);
-                
-        /*if($result)
-            echo 'exito al guardar '.$testCode."</br>";
-        else 
-            echo 'fallo al guardar '.$testCode."</br>";*/
-       
         
     }
     
@@ -245,26 +238,67 @@ class TestDB extends PgDataBase{
       
     }
     
-    private function newTest($objArr, $eye){
+    private function newTest($objArr){
         
-        $response = "";
+        $avMin = 0;
+        $avGrade = 0;
+        $avRadians = 0;
+        $e = 0;
+        $h = 0;
+        $position = 0;
+        $nextElement = 0;
+        $hPixel = 0;
+        $x = 0;
+        $y = 0;
+        $xPixel = 0;
+        $yPixel = 0;
         
-        $pixelArray = array();
-        $response = "";
+        $avList = array();
+        $avPixels = array();
+        $avPrints = array();
         
-        $optometricCard = new OptometricTest('prueba');
-        $optometricCard->setDistance($objArr[0]->distance);
-        $optometricCard->setTestCode($eye);
-        $pixelArray = $optometricCard->findInteractionData($objArr[0]->patientId);
-        $optometricCard->resizeImage($optometricCard->getHigh(),$optometricCard->getWidth(),$optometricCard->getTestCode());
-        $optometricCard->newOptometricCard($optometricCard->getInteraction(),$optometricCard->getTestCode(), $optometricCard->getWidth(), $optometricCard->getHigh(), $pixelArray);
+        $parameters = new ParameterForCard($objArr[0]->distance);
+        $printSize = new PrintSize();
+        $imageSize = new ImageSize($parameters->getCalculatePPP());
+        $avList = $parameters->getAvList();
+
+        $sizeArray = count($avList);
         
-        $this->saveNewTest($optometricCard->getTestCode());
-        $this->saveOptotypeByNewTest($optometricCard->getTestCode());
+        //// defino el tamañod elos elementos para cada renglon
+        while ($position < $sizeArray ){
+
+            $avMin = $printSize->getAvMinute($avList[$position]);
+            $avRadians = $printSize->getAvRadian($avGrade);
+            $e = $printSize->getSizeMinDetailmm($avRadians, $parameters->getDistance());
+            $avGrade = $printSize->getAvGrade($avMin);
+            $h = $printSize->getSizeElement($e);
+            $h = $printSize->getSizeElementCm($h);
+            $hPixel = $imageSize->getSizeInPixel($h);
+
+            $avPrints[$nextElement] = $h;
+            $avPixels[$nextElement] = $hPixel;
+
+            $position ++;
+            $nextElement++;
+         }  
+         
+         ///// Defino alto y ancho del lienzo que sera la carta
+        $y = $printSize->getCanvasHight($avPrints);
+        $x = $printSize->getCanvasWith($avPrints);
+        $yPixel = $imageSize->getSizeInPixel($y);
+        $xPixel = $imageSize->getSizeInPixel($x) + 100;
         
-        $response = $this->getSummaryTestByCode($optometricCard->getTestCode());
+        ///// voy a crear el lienzo base para la carta
+        $canvas = new Canvas($xPixel, $yPixel, $avPixels);
+        $canvas->newCanvasImage();
+//        $canvas->rowsForCanvas();
+//        $cardConstructor = new CardConstructor($avPixels, $distance);
+//        $cardConstructor->fillCanvasRows();
+//        $cardConstructor->fillOptometricCard();
+
+        //$response = $this->getSummaryTestByCode($optometricCard->getTestCode());
         
-        return $response;
+       // return $response;
     }
         
 }
