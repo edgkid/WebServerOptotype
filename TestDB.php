@@ -6,7 +6,7 @@ require_once 'ParameterForCard.php';
 require_once 'PrintSize.php';
 require_once 'ImageSize.php';
 require_once 'Canvas.php';
-//require_once 'CardConstructor.php';
+require_once 'CardConstructor.php';
 
 
 class TestDB extends PgDataBase{
@@ -265,9 +265,14 @@ class TestDB extends PgDataBase{
         $sizeArray = count($avList);
         
         //// defino el tamañod elos elementos para cada renglon
-        while ($position < $sizeArray ){
-
-            $avMin = $printSize->getAvMinute($avList[$position]);
+        while ($position <= $sizeArray ){
+            
+            if($position == $sizeArray){
+              $avMin = $printSize->getAvMinute($avList[$position - 1]);  
+            }else{
+               $avMin = $printSize->getAvMinute($avList[$position]); 
+            }
+            
             $avRadians = $printSize->getAvRadian($avGrade);
             $e = $printSize->getSizeMinDetailmm($avRadians, $parameters->getDistance());
             $avGrade = $printSize->getAvGrade($avMin);
@@ -291,14 +296,15 @@ class TestDB extends PgDataBase{
         ///// voy a crear el lienzo base para la carta
         $canvas = new Canvas($xPixel, $yPixel, $avPixels);
         $canvas->newCanvasImage();
-//        $canvas->rowsForCanvas();
-//        $cardConstructor = new CardConstructor($avPixels, $distance);
-//        $cardConstructor->fillCanvasRows();
-//        $cardConstructor->fillOptometricCard();
+        $canvas->rowsForCanvas();
+        $cardConstructor = new CardConstructor($avPixels, $objArr[0]->distance);
+        $cardConstructor->fillCanvasRows();
+        $cardConstructor->fillOptometricCard();
 
         //$response = $this->getSummaryTestByCode($optometricCard->getTestCode());
         
-       // return $response;
+        $response = "hola";
+        return $response;
     }
         
 }
