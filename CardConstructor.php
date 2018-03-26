@@ -13,7 +13,7 @@
  */
 class CardConstructor {
     
-    private $optotypesPath;
+   private $optotypesPath;
    private $rowsPath;
    private $canvasPath;
    private $xPosition;
@@ -21,15 +21,18 @@ class CardConstructor {
    private $arrayOptotypes;//// se consulta
    private $arrayPixels;//// parametro
    private $distance;
+   private $testCode;
    
    
-   function __construct($arrayPixels, $distance) {
+   function __construct($arrayPixels, $distance, $testCode) {
        $this->arrayPixels = $arrayPixels;
        $this->distance = $distance;
        //$this->arrayOptotypes = array();
+       //el siguiente array debe ser remplazado por algo obtenido de datos
        $this->arrayOptotypes = array('avion_1','barco_1','botella_1','camion_1','circulo_1','corazon_1','estrella_1');
        $this->xPosition = 0;
        $this->yPosition = 10;
+       $this->testCode = $testCode;
        $this->canvasPath = "C:/xampp/htdocs/WSOptotype/OptometricCard/";
        $this->optotypesPath = "C:/xampp/htdocs/WSOptotype/OptotypeForCard/";
        $this->rowsPath = "C:/xampp/htdocs/WSOptotype/rowsBase/";       
@@ -60,7 +63,8 @@ class CardConstructor {
        $column = 1;
        $totalColumn = 4;
        $position = 0;
-       $canvas = $this->rowsPath."prueba";
+       //$canvas = $this->rowsPath."prueba";
+       $canvas = $this->rowsPath. $this->testCode;
        $element = "";
        $pixelArray = array_reverse($this->arrayPixels);
        
@@ -82,8 +86,8 @@ class CardConstructor {
                
                $column ++;
                $position ++;
-               $canvas = $this->rowsPath."prueba";
-               
+               //$canvas = $this->rowsPath."prueba";
+               $canvas = $this->rowsPath. $this->testCode;
            }
            
            $column = 1;
@@ -99,7 +103,8 @@ class CardConstructor {
         $xSize = 0;
         $ySize = 0;
         $arrayRows = array('prueba_1','prueba_2','prueba_3','prueba_4','prueba_5','prueba_6','prueba_7','prueba_8','prueba_9','prueba_10','prueba_11');
-        $canvas = $this->canvasPath.'prueba.png';
+        //$canvas = $this->canvasPath.'prueba.png';
+        $canvas = $this->canvasPath. $this->testCode.".png";
         $element = $this->rowsPath;
         
         $this->setXPosition(150);

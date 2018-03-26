@@ -17,8 +17,9 @@ class Canvas {
      private $avPixels;
      private $xPosition;
      private $yPositon;
+     private $testCode;
      
-     function __construct($with, $height, $avPixels) {
+     function __construct($with, $height, $avPixels, $testCode) {
          $this->idList =  array('uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once');
          $this->AvList = array('Av1','Av2','Av3','Av4','Av5','Av6','Av7','Av8','Av9','Av10','Av11');
          $this->imagePath = "C:/xampp/htdocs/WSOptotype/OptometricCard/";
@@ -28,6 +29,7 @@ class Canvas {
          $this->avPixels = $avPixels;
          $this->with = $with;
          $this->height = $height;
+         $this->testCode = $testCode;
          $this->xPosition = 80;
          $this->yPositon = 100;
      }
@@ -44,9 +46,9 @@ class Canvas {
          
         $auxX = $this->xPosition;
         $auxY = $this->yPositon;
-        $pathImage = $this->imagePath."prueba.png";
-        
-       $img = imagecreate($this->with, $this->height);
+        //$pathImage = $this->imagePath."prueba.png";
+        $pathImage = $this->imagePath.$this->testCode.".png";
+        $img = imagecreate($this->with, $this->height);
  
         // Color de fondo
         imagecolorallocate($img, 255, 255, 255);
@@ -64,7 +66,8 @@ class Canvas {
      
      // creo imagenes para utilizarlas de filas en la carta principal
      function rowsForCanvas(){
-         $canvasCode = $this->rowsPath."prueba"; //// esto es atributo de clase
+         //$canvasCode = $this->rowsPath."prueba"; //// esto es atributo de clase
+         $canvasCode = $this->rowsPath. $this->testCode;
          $row = 0;
          $totalRows = 11;
          $array = array_reverse($this->avPixels);
@@ -82,7 +85,8 @@ class Canvas {
             imagedestroy($img);
              
             $row ++; 
-            $canvasCode = $this->rowsPath."prueba";
+            //$canvasCode = $this->rowsPath."prueba";
+            $canvasCode = $this->rowsPath. $this->testCode;
          }
          
      }

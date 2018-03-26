@@ -294,10 +294,11 @@ class TestDB extends PgDataBase{
         $xPixel = $imageSize->getSizeInPixel($x) + 100;
         
         ///// voy a crear el lienzo base para la carta
-        $canvas = new Canvas($xPixel, $yPixel, $avPixels);
+        //$canvas = new Canvas($xPixel, $yPixel, $avPixels);
+        $canvas = new Canvas($xPixel, $yPixel, $avPixels, "prueba");
         $canvas->newCanvasImage();
         $canvas->rowsForCanvas();
-        $cardConstructor = new CardConstructor($avPixels, $objArr[0]->distance);
+        $cardConstructor = new CardConstructor($avPixels, $objArr[0]->distance, "prueba");
         $cardConstructor->fillCanvasRows();
         $cardConstructor->fillOptometricCard();
 
