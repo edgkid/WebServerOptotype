@@ -18,18 +18,16 @@ class CardConstructor {
    private $canvasPath;
    private $xPosition;
    private $yPosition;
-   private $arrayOptotypes;//// se consulta
-   private $arrayPixels;//// parametro
+   private $arrayOptotypes;
+   private $arrayPixels;
    private $distance;
    private $testCode;
    
    
-   function __construct($arrayPixels, $distance, $testCode) {
+   function __construct($arrayPixels, $distance, $testCode, $arrayOptotypes) {
        $this->arrayPixels = $arrayPixels;
        $this->distance = $distance;
-       //$this->arrayOptotypes = array();
-       //el siguiente array debe ser remplazado por algo obtenido de datos
-       $this->arrayOptotypes = array('avion_1','barco_1','botella_1','camion_1','circulo_1','corazon_1','estrella_1');
+       $this->arrayOptotypes = $arrayOptotypes;
        $this->xPosition = 0;
        $this->yPosition = 10;
        $this->testCode = $testCode;
@@ -63,7 +61,6 @@ class CardConstructor {
        $column = 1;
        $totalColumn = 4;
        $position = 0;
-       //$canvas = $this->rowsPath."prueba";
        $canvas = $this->rowsPath. $this->testCode;
        $element = "";
        $pixelArray = array_reverse($this->arrayPixels);
@@ -102,8 +99,8 @@ class CardConstructor {
         $imageSize = null;
         $xSize = 0;
         $ySize = 0;
-        $arrayRows = array('prueba_1','prueba_2','prueba_3','prueba_4','prueba_5','prueba_6','prueba_7','prueba_8','prueba_9','prueba_10','prueba_11');
-        //$canvas = $this->canvasPath.'prueba.png';
+        $arrayRows = array();
+        $arrayRows = $this->idenfierRowsElement();
         $canvas = $this->canvasPath. $this->testCode.".png";
         $element = $this->rowsPath;
         
@@ -254,6 +251,23 @@ class CardConstructor {
              
          }
   
+     }
+     
+     function idenfierRowsElement (){
+         
+         $arrayValue = array();
+         $row = $this->testCode;
+         
+         for ($position = 0; $position < 11; $position ++ ){
+             
+             $row = $row."_".($position + 1);
+             $arrayValue[$position] = $row;
+             $row = $this->testCode;
+         }
+         
+         
+         return $arrayValue;
+         
      }
     
 }
