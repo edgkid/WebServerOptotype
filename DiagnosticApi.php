@@ -1,11 +1,5 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+require_once 'DiagnosticDB.php';
 /**
  * Description of DiagnosticApi
  *
@@ -22,7 +16,7 @@ class DiagnosticApi {
             echo 'get';
             break;     
         case 'POST'://inserta
-            echo'post';
+            $this->proccessDiagnostic();
             break;                
         case 'PUT'://actualiza
             echo 'put';
@@ -37,6 +31,20 @@ class DiagnosticApi {
     }
     
     public function proccessDiagnostic (){
+        
+        if ($_GET['action'] == 'diagnostic'){
+            
+            $obj = json_decode( file_get_contents('php://input') );   
+            $objArr = (array)$obj;
+            
+            if (!empty($objArr)){
+                $diagnosticDb = new DiagnosticDB();
+                $response = $diagnosticDb->proccessDataDiagnostic();
+                echo json_encode($response,JSON_PRETTY_PRINT);
+            }
+        }else{
+           $this->response(400);
+        }
         
     } 
     
