@@ -6,12 +6,22 @@
  */
 class Diagnostic {
     
+    private $idPatient;
     private $idSignalDefect;
     private $idSubjectiveTest;
     private $idObjectiveTest;
     private $idAntecedent;
     private $idAvResult;
     
+    function getIdPatient() {
+        return $this->idPatient;
+    }
+
+    function setIdPatient($idPatient) {
+        $this->idPatient = $idPatient;
+    }
+
+        
     function getIdSignalDefect() {
         return $this->idSignalDefect;
     }
