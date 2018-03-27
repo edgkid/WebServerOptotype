@@ -304,7 +304,6 @@ class TestDB extends PgDataBase{
         
         ///Aqui debo obtener los elementos de interacción, habilito el atributo y lo paso por constructor
         $avElements = $this->getElementsInteraction($objArr[0]->patientId, $testCode);
-        //$cardConstructor = new CardConstructor($avPixels, $objArr[0]->distance, $testCode);
         $cardConstructor = new CardConstructor($avPixels, $objArr[0]->distance, $testCode, $avElements);
         $cardConstructor->fillCanvasRows();
         $cardConstructor->fillOptometricCard();
@@ -392,7 +391,5 @@ class TestDB extends PgDataBase{
         
         return $elements;
          
-    }
-    
-        
+    }       
 }
