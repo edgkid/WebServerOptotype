@@ -39,7 +39,7 @@ class DiagnosticApi {
             
             if (!empty($objArr)){
                 $diagnosticDb = new DiagnosticDB();
-                $response = $diagnosticDb->proccessDataDiagnostic();
+                $response = $diagnosticDb->proccessDataDiagnostic($objArr);
                 echo json_encode($response,JSON_PRETTY_PRINT);
             }
         }else{
