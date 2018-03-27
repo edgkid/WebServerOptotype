@@ -5,6 +5,7 @@
     require_once 'TestApi.php';
     require_once 'AppointmentApi.php';
     require_once 'AvResultApi.php';
+    require_once 'DiagnosticApi.php';
     
     if ($_GET['action'] == 'updateKids'){
         $update = new PatientApi();
@@ -47,3 +48,8 @@
         $avResult->API();
     }
     
+    if ($_GET['action'] == 'diagnostic'){
+        
+        $diagnostic = new DiagnosticApi();
+        $diagnostic->API();
+    }
