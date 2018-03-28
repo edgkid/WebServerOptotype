@@ -61,8 +61,9 @@ class DiagnosticDB extends PgDataBase {
         //$this->saveDataDiagnosticSignalPatient($diagnostic, $obj);
         $this->saveDataDiagnosticAntecedentRegister($diagnostic, $obj);
         //// esto debo validarlo
-        $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antacedentDad, 'M');
-        $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antecedentMon, 'F');
+        //$this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antacedentDad, 'M');
+        //$this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antecedentMon, 'F');
+        $this->saveDataDiagnosticSubjectiveTest($diagnostic, $obj);
             
     }
     
@@ -187,6 +188,25 @@ class DiagnosticDB extends PgDataBase {
             $query = $query." commit;";
             $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
         }
+        
+    }
+    
+    private function saveDataDiagnosticSubjectiveTest (Diagnostic $diagnostic, array $obj){
+        
+        $idTable = "idSubjective";
+        $whereClausule = " ";
+        $query = " INSERT INTO SUBJECTIVE_TEST (center, SUSTAIN, MAINTAIN) VALUES ('".$obj[0]->center."',";
+        $query = $query."'".$obj[0]->sustain."','".$obj[0]->maintain."'); ";
+        $query = $query." commit;";
+
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+        if ($result){
+            $query = " Select max (".$idTable.") from ";
+            $tableName = " Subjective_test ";
+            $diagnostic->setIdSubjectiveTest($this->getAId($query, $tableName, $whereClausule));
+        }
+        
         
     }
     
