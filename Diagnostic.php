@@ -11,7 +11,15 @@ class Diagnostic {
     private $idSubjectiveTest;
     private $idObjectiveTest;
     private $idAntecedent;
-    private $idAvResult;
+    
+    function __construct() {
+        $this->idPatient = 0;
+        $this->idSignalDefect = 0;
+        $this->idSubjectiveTest = 0;
+        $this->idObjectiveTest = 0;
+        $this->idAntecedent = 0;
+    }
+
     
     function getIdPatient() {
         return $this->idPatient;
