@@ -43,15 +43,17 @@ class DiagnosticDB extends PgDataBase {
         $diagnostic = new Diagnostic();
         $diagnostic->setIdPatient($obj[0]->idPatient);
         
-        //$this->saveDataDiagnosticSignalRegister($diagnostic, $obj);
-        //$this->saveDataDiagnosticSignalPatient($diagnostic, $obj);
-        //$this->saveDataDiagnosticAntecedentRegister($diagnostic, $obj);
-        //// esto debo validarlo
-        //$this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antacedentDad, 'M');
-        //$this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antecedentMon, 'F');
+        $this->saveDataDiagnosticSignalRegister($diagnostic, $obj);
+        $this->saveDataDiagnosticSignalPatient($diagnostic, $obj);
+        $this->saveDataDiagnosticAntecedentRegister($diagnostic, $obj);
         
-        //$this->saveDataDiagnosticSubjectiveTest($diagnostic, $obj);
+        //// esto debo validarlo
+        $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antacedentDad, 'M');
+        $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antecedentMon, 'F');
+        
+        $this->saveDataDiagnosticSubjectiveTest($diagnostic, $obj);
         $this->saveDataDiagnosticObjectiveTets($diagnostic, $obj);
+        $this->saveDataDiagnosticResult($diagnostic, $obj);
     }
     
     private function getAId ($query, $tableNanme, $whereClausule){
@@ -193,6 +195,7 @@ class DiagnosticDB extends PgDataBase {
             $tableName = " Subjective_test ";
             $diagnostic->setIdSubjectiveTest($this->getAId($query, $tableName, $whereClausule));
         }  
+        
     }
     
     private function saveDataDiagnosticObjectiveTets (Diagnostic $diagnostic, array $obj){
@@ -210,8 +213,17 @@ class DiagnosticDB extends PgDataBase {
             $diagnostic->setIdObjectiveTest($this->getAId($query, $tableName, $whereClausule));
         }  
         
-        echo $diagnostic->getIdObjectiveTest();
+    }
+    
+    private function saveDataDiagnosticResult (Diagnostic $diagnostic, array $obj){
         
+        $query = "INSERT INTO DIAGNOSTIC_RESULT (typeTest,colaboration,";
+        $query = $query."fk_idSubjective,fk_idAvResult,fk_antecendent,fk_Signal) VALUES (";
+        $query = $query."'".$obj[0]->typeTest."','".$obj[0]->colaboratedGrade."',";
+        $query = $query.$diagnostic->getIdSubjectiveTest().",".$diagnostic->getIdObjectiveTest().",";
+        $query = $query.$diagnostic->getIdAntecedent().",".$diagnostic->getIdSignalDefect()."); commit;";
+
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
     }
     
 }
