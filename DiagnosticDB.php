@@ -39,32 +39,19 @@ class DiagnosticDB extends PgDataBase {
     }
     
     private function saveDataDiagnostic(array $obj){
-        
-        /*echo $obj[0]->idPatient.' ';
-        echo $obj[0]->yearsOld." ";
-        echo $obj[0]->gender." ";
-        echo $obj[0]->center." ";
-        echo $obj[0]->sustain." ";
-        echo $obj[0]->maintain." ";
-        echo $obj[0]->avRigth." ";
-        echo $obj[0]->avLeft." ";
-        echo $obj[0]->antecedentMon." ";
-        echo $obj[0]->antacedentDad." ";
-        echo $obj[0]->signalDefect." ";        
-        echo $obj[0]->typeTest." ";
-        echo $obj[0]->colaboratedGrade." ";*/
-        
+
         $diagnostic = new Diagnostic();
         $diagnostic->setIdPatient($obj[0]->idPatient);
         
         //$this->saveDataDiagnosticSignalRegister($diagnostic, $obj);
         //$this->saveDataDiagnosticSignalPatient($diagnostic, $obj);
-        $this->saveDataDiagnosticAntecedentRegister($diagnostic, $obj);
+        //$this->saveDataDiagnosticAntecedentRegister($diagnostic, $obj);
         //// esto debo validarlo
         //$this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antacedentDad, 'M');
         //$this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antecedentMon, 'F');
-        $this->saveDataDiagnosticSubjectiveTest($diagnostic, $obj);
-            
+        
+        //$this->saveDataDiagnosticSubjectiveTest($diagnostic, $obj);
+        $this->saveDataDiagnosticObjectiveTets($diagnostic, $obj);
     }
     
     private function getAId ($query, $tableNanme, $whereClausule){
@@ -205,8 +192,25 @@ class DiagnosticDB extends PgDataBase {
             $query = " Select max (".$idTable.") from ";
             $tableName = " Subjective_test ";
             $diagnostic->setIdSubjectiveTest($this->getAId($query, $tableName, $whereClausule));
-        }
+        }  
+    }
+    
+    private function saveDataDiagnosticObjectiveTets (Diagnostic $diagnostic, array $obj){
         
+        $idTable = "idAvResult";
+        $whereClausule = " ";
+        $query = "INSERT INTO AV_RESULT (eyeRight,eyeLeft) VALUES (";
+        $query = $query.$obj[0]->avRigth.",".$obj[0]->avLeft."); commit;";
+        
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+        if ($result){
+            $query = " Select max (".$idTable.") from ";
+            $tableName = " AV_RESULT ";
+            $diagnostic->setIdObjectiveTest($this->getAId($query, $tableName, $whereClausule));
+        }  
+        
+        echo $diagnostic->getIdObjectiveTest();
         
     }
     
