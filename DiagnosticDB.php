@@ -57,8 +57,12 @@ class DiagnosticDB extends PgDataBase {
         $diagnostic = new Diagnostic();
         $diagnostic->setIdPatient($obj[0]->idPatient);
         
-        $this->saveDataDiagnosticSignalRegister($diagnostic, $obj);
-        $this->saveDataDiagnosticSignalPatient($diagnostic, $obj);
+        //$this->saveDataDiagnosticSignalRegister($diagnostic, $obj);
+        //$this->saveDataDiagnosticSignalPatient($diagnostic, $obj);
+        $this->saveDataDiagnosticAntecedentRegister($diagnostic, $obj);
+        //// esto debo validarlo
+        $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antacedentDad, 'M');
+        $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antecedentMon, 'F');
             
     }
     
@@ -138,9 +142,51 @@ class DiagnosticDB extends PgDataBase {
             $query = $query.$someId[$position].",".$diagnostic->getIdSignalDefect()."); ";
             $query = $query." commit;";
             $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
-            echo $query;
+        }   
+    }
+    
+    private function saveDataDiagnosticAntecedentRegister(Diagnostic $diagnostic, array $obj){
+        
+        $fk = (int) $obj[0]->idPatient;
+        $idTable = "idByRegister";
+        $whereClausule = " ";
+        $query = " INSERT INTO ANTECENDENT_BY_REGISTER (fk_idPatient) VALUES (".$fk.");";            
+        $query = $query." commit;";
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+        if ($result){
+            $query = " Select max (".$idTable.") from ";
+            $tableName = " ANTECENDENT_BY_REGISTER ";
+            $diagnostic->setIdAntecedent($this->getAId($query, $tableName, $whereClausule));
         }
         
+    }
+    
+    private function saveDataDiagnosticAntecedentRoll (Diagnostic $diagnostic, array $obj, $antecedent, $roll){
+        
+        $someId = array();
+        $arrayAntecedent = split(',', $antecedent);
+        $tableName = " ANTECENDENT an ";
+        $query = " SELECT an.idAntecedent FROM ";
+        $whereClausule = " WHERE";
+        
+        for ($position = 0; $position < count($arrayAntecedent); $position ++){
+         
+            $whereClausule = $whereClausule." an.name like ('%".$arrayAntecedent[$position]."%') ";
+            $whereClausule = $whereClausule." OR ";
+        }
+        
+        $whereClausule = substr($whereClausule, 0, -5).";";
+        
+        $someId = $this->getSomeId($query, $tableName, $whereClausule);
+
+        for ($position = 0; $position < count($someId); $position ++){
+            
+            $query = " INSERT INTO ANTECENDENT_ROLL (roll, fk_idAntecedent, fk_idByRegister) VALUES (";
+            $query = $query."'".$roll."',".$someId[$position].",".$diagnostic->getIdAntecedent()."); ";
+            $query = $query." commit;";
+            $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        }
         
     }
     
