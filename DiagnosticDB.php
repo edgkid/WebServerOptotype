@@ -1,13 +1,13 @@
 <?php
 
-require_once 'PgDataBase.php';
+//require_once 'PgDataBase.php';
 require_once 'Diagnostic.php';
 /**
  * Description of DiagnosticDB
  *
  * @author Edgar
  */
-class DiagnosticDB {
+class DiagnosticDB extends PgDataBase {
     
     
     public function proccessDataDiagnostic(array $obj){
@@ -58,31 +58,14 @@ class DiagnosticDB {
         $diagnostic->setIdPatient($obj[0]->idPatient);
         
         $this->saveDataDiagnosticSignalRegister($diagnostic, $obj);
+        $this->saveDataDiagnosticSignalPatient($diagnostic, $obj);
             
     }
     
-    private function saveDataDiagnosticSignalRegister (Diagnostic $diagnostic, array $obj){
-        
-        $fk = (int) $obj[0]->idPatient;
-        $connect = new PgDataBase();
-        $connect->getPgConnect();
-        $idTable = "idSignalRegister";
-        $query = " INSERT INTO Signal_BY_REGISTER (fk_idPatient) VALUES (".$fk."); ";
-        $query = $query." commit;";
-        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
-        
-        if ($result){
-            $query = " Select max (".$idTable.") from ";
-            $tableName = "Signal_BY_REGISTER";
-            $diagnostic->setIdSignalDefect($this->getAId($query, $tableName));
-        }
-            
-    }
-    
-    private function getAId ($query, $tableNanme){
+    private function getAId ($query, $tableNanme, $whereClausule){
         $id = 0;
         
-        $query = $query.$tableNanme;
+        $query = $query.$tableNanme.$whereClausule;
         
         $result = pg_query($query);
         
@@ -92,6 +75,72 @@ class DiagnosticDB {
         }
         
         return $id;
+        
+    }
+    
+    private function getSomeId ($query, $tableNanme, $whereClausule){
+        
+        $someId = array();
+        $position = 0;
+        $query = $query.$tableNanme.$whereClausule;
+        
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+       
+        while ($row = pg_fetch_row($result)) {
+           
+            $someId[$position] = $row[0];
+            $position ++;
+        }
+        
+        return $someId;
+        
+    }
+    
+    private function saveDataDiagnosticSignalRegister (Diagnostic $diagnostic, array $obj){
+        
+        $fk = (int) $obj[0]->idPatient;
+        $idTable = "idSignalRegister";
+        $whereClausule = " ";
+        $query = " INSERT INTO Signal_BY_REGISTER (fk_idPatient) VALUES (".$fk.");";            
+        $query = $query." commit;";
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+        if ($result){
+            $query = " Select max (".$idTable.") from ";
+            $tableName = "Signal_BY_REGISTER";
+            $diagnostic->setIdSignalDefect($this->getAId($query, $tableName, $whereClausule));
+        }
+            
+    }
+    
+    private function saveDataDiagnosticSignalPatient (Diagnostic $diagnostic, array $obj){
+        
+        $someId = array();
+        $arraySignal = split(',', $obj[0]->signalDefect);
+        $tableName = " SIGNAL_DEFECT sd ";
+        $query = " SELECT sd.idSignal FROM ";
+        $whereClausule = " WHERE";
+        
+        for ($position = 0; $position < count($arraySignal); $position ++){
+         
+            $whereClausule = $whereClausule." sd.name like ('%".$arraySignal[$position]."%') ";
+            $whereClausule = $whereClausule." OR ";
+        }
+        
+        $whereClausule = substr($whereClausule, 0, -5).";";
+        
+        $someId = $this->getSomeId($query, $tableName, $whereClausule);
+
+        $query = "";
+        for ($position = 0; $position < count($someId); $position ++){
+            
+            $query = " INSERT INTO SIGNAL_DEFECT_PATIENT (fk_idSignal, fk_idregisterSignal) VALUES (";
+            $query = $query.$someId[$position].",".$diagnostic->getIdSignalDefect()."); ";
+            $query = $query." commit;";
+            $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+            echo $query;
+        }
+        
         
     }
     
