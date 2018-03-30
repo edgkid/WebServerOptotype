@@ -156,15 +156,17 @@ class DiagnosticDB extends PgDataBase {
         
         $someId = array();
         $arrayAntecedent = split(',', $antecedent);
-        $tableName = " ANTECENDENT an ";
-        $query = " SELECT an.idAntecedent FROM ";
+        $tableName = " EYE_DEFECT ed ";
+        $query = " SELECT ed.idDefect FROM ";
         $whereClausule = " WHERE";
         
         for ($position = 0; $position < count($arrayAntecedent); $position ++){
          
-            $whereClausule = $whereClausule." an.name like ('%".$arrayAntecedent[$position]."%') ";
+            $whereClausule = $whereClausule." ed.name like ('%".$arrayAntecedent[$position]."%') ";
             $whereClausule = $whereClausule." OR ";
         }
+        
+        echo $query.$tableName.$whereClausule;
         
         $whereClausule = substr($whereClausule, 0, -5).";";
         
@@ -172,10 +174,11 @@ class DiagnosticDB extends PgDataBase {
 
         for ($position = 0; $position < count($someId); $position ++){
             
-            $query = " INSERT INTO ANTECENDENT_ROLL (roll, fk_idAntecedent, fk_idByRegister) VALUES (";
+            $query = " INSERT INTO ANTECENDENT_ROLL (roll, fk_idEyeDefect, fk_idByRegister) VALUES (";
             $query = $query."'".$roll."',".$someId[$position].",".$diagnostic->getIdAntecedent()."); ";
-            $query = $query." commit;";
+            $query = $query." commit;";           
             $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+            
         }
         
     }
@@ -224,6 +227,13 @@ class DiagnosticDB extends PgDataBase {
         $query = $query.$diagnostic->getIdAntecedent().",".$diagnostic->getIdSignalDefect()."); commit;";
 
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+    }
+    
+    private function saveDataDiagnosticOnRepository (){
+        
+        $query = "INSERT INTO REPOSITORY_DIAGNOSTIC (repositoryYears, repositorySex,repositoryAntecendet,";
+        $query = $query."repositoryAV,repositoryColaborated, repositoryTypeTest, repositoryDate) VALUES (";
+        
     }
     
 }
