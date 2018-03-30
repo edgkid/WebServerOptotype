@@ -54,6 +54,7 @@ class DiagnosticDB extends PgDataBase {
         $this->saveDataDiagnosticSubjectiveTest($diagnostic, $obj);
         $this->saveDataDiagnosticObjectiveTets($diagnostic, $obj);
         $this->saveDataDiagnosticResult($diagnostic, $obj);
+        $this->saveDataDiagnosticOnRepository($diagnostic, $obj);
     }
     
     private function getAId ($query, $tableNanme, $whereClausule){
@@ -166,8 +167,6 @@ class DiagnosticDB extends PgDataBase {
             $whereClausule = $whereClausule." OR ";
         }
         
-        echo $query.$tableName.$whereClausule;
-        
         $whereClausule = substr($whereClausule, 0, -5).";";
         
         $someId = $this->getSomeId($query, $tableName, $whereClausule);
@@ -229,11 +228,80 @@ class DiagnosticDB extends PgDataBase {
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
     }
     
-    private function saveDataDiagnosticOnRepository (){
+    private function saveDataDiagnosticOnRepository (Diagnostic $diagnostic, array $obj){
         
-        $query = "INSERT INTO REPOSITORY_DIAGNOSTIC (repositoryYears, repositorySex,repositoryAntecendet,";
-        $query = $query."repositoryAV,repositoryColaborated, repositoryTypeTest, repositoryDate) VALUES (";
+        $arrayMon = array();
+        $arrayDad = array();
+        $arraySIgnal = array();
+        $arrayAntecedent = array();
+        
+        if($obj[0]->antecedentMon != ""){
+           $arrayMon = split(',',$obj[0]->antecedentMon); 
+        }
+        if ($obj[0]->antacedentDad != ""){
+            $arrayDad = split(',', $obj[0]->antacedentDad);
+        }
+        if($obj[0]->signalDefect != ""){
+           $arraySIgnal = split(',', $obj[0]->signalDefect); 
+        }
+        
+        $arrayAntecedent = array_merge($arrayMon, $arrayDad);
+        $arrayAntecedent = array_unique($arrayAntecedent);
+        $arraySIgnal = array_unique($arraySIgnal);
+
+        if (count($arrayAntecedent) > 0){
+            if(count($arraySIgnal) > 0){
+                for($x = 0; $x <count($arrayAntecedent); $x++){
+                    for($y = 0; $y <count($arraySIgnal); $y++){
+                        $this->insertInRepository($diagnostic, $obj,$arraySIgnal[$y],$arrayAntecedent[$x]);
+                    }
+                }
+            }else{
+                for ($x = 0; $x <count($arrayAntecedent); $x++){
+                    $this->insertInRepository($diagnostic, $obj,null,$arrayAntecedent[$x]);
+                }
+            }
+        }elseif (count($arraySIgnal) > 0){
+            for($y = 0; $y <count($arraySIgnal); $y++){
+                $this->insertInRepository($diagnostic, $obj,$arraySIgnal[$y],null);
+            }
+        }else{
+            $this->insertInRepository($diagnostic, $obj,null,null);
+        }
+    }
+    
+    private function insertInRepository(Diagnostic $diagnostic, array $obj, $signal, $antecedent){
+        
+        $antValue = 'null';
+        $sigValue = 'null';
+        
+        if ($signal != null){
+            $idTable = ' idSignal ';
+            $tableName = ' SIGNAL_DEFECT ';
+            $whereClausule = '';
+            $query = " SELECT MAX(".$idTable.") FROM ";
+            $sigValue = $this->getAId($query, $tableName, $whereClausule);
+        }
+        if ($antecedent != null){
+            $idTable = 'idDefect';
+            $tableName = 'EYE_DEFECT';
+            $whereClausule = ''; 
+            $query = " SELECT MAX(".$idTable.") FROM ";
+            $antValue = $this->getAId($query, $tableName, $whereClausule);
+        }
+        
+        $query = "INSERT INTO REPOSITORY_DIAGNOSTIC (repositoryYears, repositorySex, respositoryCenter,";
+        $query = $query."repositorySustain, repositorymaintain, repositoryAvRigth, repositoryAvLeft,";
+        $query = $query."repositoryColaborated, repositoryTypeTest, repositoryDate, fk_defect, fk_signalDefect) ";
+        $query = $query."VALUES (".$obj[0]->yearsOld.",'".$obj[0]->gender."','".$obj[0]->center."','";
+        $query = $query.$obj[0]->sustain."','".$obj[0]->maintain."','".$obj[0]->avRigth."','".$obj[0]->avLeft."','";
+        $query = $query.$obj[0]->colaboratedGrade."','".$obj[0]->typeTest."','"."12/12/2012"."',".$antValue.",";
+        $query = $query.$sigValue."); commit;";
+        
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+       
         
     }
+    
     
 }
