@@ -43,13 +43,20 @@ class DiagnosticDB extends PgDataBase {
         $diagnostic = new Diagnostic();
         $diagnostic->setIdPatient($obj[0]->idPatient);
         
-        $this->saveDataDiagnosticSignalRegister($diagnostic, $obj);
-        $this->saveDataDiagnosticSignalPatient($diagnostic, $obj);
-        $this->saveDataDiagnosticAntecedentRegister($diagnostic, $obj);
+        if ($obj[0]->signalDefect != ""){
+            $this->saveDataDiagnosticSignalRegister($diagnostic, $obj);
+            $this->saveDataDiagnosticSignalPatient($diagnostic, $obj);
+        }
         
-        //// esto debo validarlo
-        $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antacedentDad, 'M');
-        $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antecedentMon, 'F');
+        if ($obj[0]->antecedentMon != ""){
+           $this->saveDataDiagnosticAntecedentRegister($diagnostic, $obj); 
+           $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antacedentDad, 'M');
+        }
+        
+        if ($obj[0]->antacedentDad){
+          $this->saveDataDiagnosticAntecedentRegister($diagnostic, $obj);
+          $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antecedentMon, 'F');
+        }        
         
         $this->saveDataDiagnosticSubjectiveTest($diagnostic, $obj);
         $this->saveDataDiagnosticObjectiveTets($diagnostic, $obj);
@@ -219,12 +226,19 @@ class DiagnosticDB extends PgDataBase {
     
     private function saveDataDiagnosticResult (Diagnostic $diagnostic, array $obj){
         
+        if ($diagnostic->getIdAntecedent() == 0){
+            $diagnostic->setIdAntecedent('null');
+        }
+        if ($diagnostic->getIdSignalDefect() == 0){
+            $diagnostic->setIdSignalDefect('null');
+        }
+        
         $query = "INSERT INTO DIAGNOSTIC_RESULT (typeTest,colaboration,";
         $query = $query."fk_idSubjective,fk_idAvResult,fk_antecendent,fk_Signal) VALUES (";
         $query = $query."'".$obj[0]->typeTest."','".$obj[0]->colaboratedGrade."',";
         $query = $query.$diagnostic->getIdSubjectiveTest().",".$diagnostic->getIdObjectiveTest().",";
         $query = $query.$diagnostic->getIdAntecedent().",".$diagnostic->getIdSignalDefect()."); commit;";
-
+        
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
     }
     
