@@ -274,6 +274,7 @@ class DiagnosticDB extends PgDataBase {
         
         $antValue = 'null';
         $sigValue = 'null';
+        $today = date("d")."/".date("m")."/".date("Y");
         
         if ($signal != null){
             $idTable = ' idSignal ';
@@ -295,10 +296,11 @@ class DiagnosticDB extends PgDataBase {
         $query = $query."repositoryColaborated, repositoryTypeTest, repositoryDate, fk_defect, fk_signalDefect) ";
         $query = $query."VALUES (".$obj[0]->yearsOld.",'".$obj[0]->gender."','".$obj[0]->center."','";
         $query = $query.$obj[0]->sustain."','".$obj[0]->maintain."','".$obj[0]->avRigth."','".$obj[0]->avLeft."','";
-        $query = $query.$obj[0]->colaboratedGrade."','".$obj[0]->typeTest."','"."12/12/2012"."',".$antValue.",";
+        $query = $query.$obj[0]->colaboratedGrade."','".$obj[0]->typeTest."','".$today."',".$antValue.",";
         $query = $query.$sigValue."); commit;";
         
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
        
         
     }
