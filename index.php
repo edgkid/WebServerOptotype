@@ -6,6 +6,7 @@
     require_once 'AppointmentApi.php';
     require_once 'AvResultApi.php';
     require_once 'DiagnosticApi.php';
+    require_once 'ChromaticDefectApi.php';
     
     if ($_GET['action'] == 'updateKids'){
         $update = new PatientApi();
@@ -52,4 +53,14 @@
         
         $diagnostic = new DiagnosticApi();
         $diagnostic->API();
+    }
+    
+    if ($_GET['action'] == 'antecedent'){
+        $chromaticDefect = new ChromaticDefectApi();
+        $chromaticDefect->API();
+    }
+    
+    if ($_GET['action'] == 'signalDefect'){
+        echo 'sintomas';
+        
     }
