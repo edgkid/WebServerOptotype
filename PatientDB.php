@@ -52,7 +52,7 @@ class PatientDB extends PgDataBase {
         $data = array();
         $query = "  SELECT pat.idPatient as idPatient, pat.firstName as firstName, ".
                "           pat.middleName as middleName, pat.lastName as lastName,".
-               "           pat.maidenName as maidenName ,".
+               "           pat.maidenName as maidenName , pat.sex as gender, pat.birthday as birthday, ".
                "    (extract(year from  current_timestamp) - extract(year from pat.birthDay)) as yearsOld,".
                "    pat.photo as image,". 
                "    pat.fk_idUser as fkUSer,".
@@ -65,7 +65,7 @@ class PatientDB extends PgDataBase {
        
         while ($line = pg_fetch_array($patient, null, PGSQL_ASSOC)) {
             //$data[] = $line;
-            $data []= array('idPatient'=>$line['idpatient'],'firstName'=>$line['firstname'],'middleName'=>$line['middlename'],'lastName'=>$line['lastname'],'maidenName'=>$line['maidenname'],'yearsOld'=>$line['yearsold'],'image'=> base64_encode(pg_unescape_bytea($line['image'])),'fkUSer'=>$line['fkuser'],'nextAppointmentDate'=>$line['nextappointmentdate']);
+            $data []= array('idPatient'=>$line['idpatient'],'firstName'=>$line['firstname'],'middleName'=>$line['middlename'],'lastName'=>$line['lastname'],'maidenName'=>$line['maidenname'],'gender'=>$line['gender'],'birthday'=>$line['birthday'],'yearsOld'=>$line['yearsold'],'image'=> base64_encode(pg_unescape_bytea($line['image'])),'fkUSer'=>$line['fkuser'],'nextAppointmentDate'=>$line['nextappointmentdate']);
         }
         
         return $data;
