@@ -223,6 +223,10 @@ class TestDB extends PgDataBase{
     function getSummaryTestByCode($testCode){
         
         $data = array();
+        $directory = "rowsBase";
+        $path = ""; 
+        $count = 0;
+        $row = 1;
         
         $query ="   SELECT idsummary, summaryCode, imagetest".
                 "   FROM summary_test".
@@ -233,6 +237,24 @@ class TestDB extends PgDataBase{
         while ($line = pg_fetch_array($patient, null, PGSQL_ASSOC)) {
             $data []= array('idSummary'=>$line['idsummary'],'summaryCode'=>$line['summarycode'],'imageTest'=> base64_encode(pg_unescape_bytea($line['imagetest'])));
         }
+        
+        $files = opendir($directory);
+        
+        while ($file = readdir($files)){
+    
+            if ($count >1){
+                
+                $path = $directory."/".$file;
+                $name = explode(".", $file);
+                $bytesFile = file_get_contents($path);
+                $data []= array('idSummary'=>0,'summaryCode'=>$testCode."_".$row,'imageTest'=> base64_encode($bytesFile));
+                $row++;
+                
+            }
+            $count ++;
+            
+        }
+        
         
         return $data;
       
