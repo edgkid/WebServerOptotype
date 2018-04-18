@@ -223,6 +223,7 @@ class TestDB extends PgDataBase{
     function getSummaryTestByCode($testCode){
         
         $data = array();
+        $dataTest = array();
         $directory = "rowsBase";
         $path = ""; 
         $count = 0;
@@ -255,8 +256,21 @@ class TestDB extends PgDataBase{
             
         }
         
+        $dataTest[0] = $data[0];
+        $dataTest[1] = $data[1];
+        $dataTest[2] = $data[4];
+        $dataTest[3] = $data[5];
+        $dataTest[4] = $data[6];
+        $dataTest[5] = $data[7];
+        $dataTest[6] = $data[8];
+        $dataTest[7] = $data[9];
+        $dataTest[8] = $data[10];
+        $dataTest[9] = $data[11];
+        $dataTest[10] = $data[2];
+        $dataTest[11] = $data[3];
+        $dataTest[12] = $data[3];
         
-        return $data;
+        return $dataTest;
       
     }
     
