@@ -350,6 +350,9 @@ class TestDB extends PgDataBase{
         }
 
         $response = $this->getSummaryTestByCode($testCode);
+        // DElete elementos en la carpetas optometric y rows
+        $this->deleteImageElementOnServer("OptometricCard");
+        $this->deleteImageElementOnServer("rowsBase");
 
         return $response;
     }
@@ -427,5 +430,25 @@ class TestDB extends PgDataBase{
         
         return $elements;
          
-    }       
+    }
+    
+    
+    function deleteImageElementOnServer ($directory){
+       
+        $count = 0;
+        $files = opendir($directory);
+        
+        while ($file = readdir($files)){
+    
+            if ($count >1){
+                
+                $path = $directory ."/".$file;
+                unlink($path);
+                
+            }
+            $count ++;      
+        }
+        
+    }
+    
 }
