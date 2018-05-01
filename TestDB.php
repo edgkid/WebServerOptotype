@@ -268,7 +268,6 @@ class TestDB extends PgDataBase{
         $dataTest[9] = $data[11];
         $dataTest[10] = $data[2];
         $dataTest[11] = $data[3];
-        $dataTest[12] = $data[3];
         
         return $dataTest;
       
