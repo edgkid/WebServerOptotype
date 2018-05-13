@@ -226,6 +226,11 @@ class DiagnosticDB extends PgDataBase {
     
     private function saveDataDiagnosticResult (Diagnostic $diagnostic, array $obj){
         
+        $appointment = "(   SELECT idAppointment 
+                            FROM Medical_Appointment
+                            WHERE to_char(appointmentDate, 'dd/mm/yyyy') = to_char((Current_Timestamp :: date), 'dd/mm/yyyy')
+                                    AND fk_idPatient = ".$diagnostic->getIdPatient()." )";
+        
         if ($diagnostic->getIdAntecedent() == 0){
             $diagnostic->setIdAntecedent('null');
         }
@@ -234,10 +239,10 @@ class DiagnosticDB extends PgDataBase {
         }
         
         $query = "INSERT INTO DIAGNOSTIC_RESULT (typeTest,colaboration,";
-        $query = $query."fk_idSubjective,fk_idAvResult,fk_antecendent,fk_Signal) VALUES (";
+        $query = $query."fk_idSubjective,fk_idAvResult,fk_antecendent,fk_Signal,fk_Appointment) VALUES (";
         $query = $query."'".$obj[0]->typeTest."','".$obj[0]->colaboratedGrade."',";
         $query = $query.$diagnostic->getIdSubjectiveTest().",".$diagnostic->getIdObjectiveTest().",";
-        $query = $query.$diagnostic->getIdAntecedent().",".$diagnostic->getIdSignalDefect()."); commit;";
+        $query = $query.$diagnostic->getIdAntecedent().",".$diagnostic->getIdSignalDefect().",".$appointment."); commit;";
         
         $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
     }
