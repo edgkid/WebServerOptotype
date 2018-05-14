@@ -24,7 +24,7 @@ class OptotypeApi {
             $this->getOptotypes();
             break;     
         case 'POST'://inserta
-            echo'post';
+            $this->getOptotypesByPost();
             break;                
         case 'PUT'://actualiza
             $this->putOptotypes();
@@ -49,19 +49,26 @@ class OptotypeApi {
            $db = new OptotypeDB();
            $response = $db->getOptotypes();
            echo json_encode($response,JSON_PRETTY_PRINT);
-           /*if(isset($_GET['id'])){
-               //$response = $db->getUserById($_GET['id']);
-               echo json_encode($response,JSON_PRETTY_PRINT);
-           }elseif (isset($_GET['userName']) && isset($_GET['userPassword'])) {
-                //$response = $db->getUserByLogin($_GET['userName'],$_GET['userPassword']);
-                echo json_encode($response,JSON_PRETTY_PRINT);
-            }else{
-               $response = $db->getOptotypes();
-               echo json_encode($response,JSON_PRETTY_PRINT);
-           }*/
        }else{
            $this->response(400);
        }  
+    }
+    
+    function getOptotypesByPost(){
+        
+        if ($_GET['action'] == 'optotypes'){
+           $obj = json_decode( file_get_contents('php://input') );   
+           $objArr = (array)$obj; 
+           if (!empty($objArr)){
+               $db = new OptotypeDB();
+               $response = $db->getOptotypesByYears($objArr[0]->year);
+               echo json_encode($response,JSON_PRETTY_PRINT);
+            }
+       }else{
+           $this->response(400);
+       }  
+        
+        
     }
     
     

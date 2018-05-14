@@ -36,6 +36,25 @@ class OptotypeDB extends PgDataBase{
         return $data; 
     }
     
+    public function getOptotypesByYears($year){
+        
+        $limit = "16";
+        $data = array();
+        
+        $query = "  SELECT IdOptotype, OptotypeCode, OptotypeName, Image"
+                ."  FROM Optotype"
+                ."  WHERE optotypeYear = ".$year
+                ."  ORDER BY random() LIMIT ".$limit;
+        
+        $optotypes = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+        while ($line = pg_fetch_array($optotypes, null, PGSQL_ASSOC)) {
+            $data []= array('idOptotype'=>$line['idoptotype'],'optotypeName'=>$line['optotypename'],'optotypeCode'=>$line['optotypecode'],'image'=> base64_encode(pg_unescape_bytea($line['image'])));
+         }
+        
+        return $data;
+    }
+    
     public function putOptotypesImage (){
         
         $directory="optotypesImage";
