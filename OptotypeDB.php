@@ -36,7 +36,23 @@ class OptotypeDB extends PgDataBase{
         return $data; 
     }
     
-    public function getOptotypesByYears($year){
+    /*public function getOptotypeAnswer(){
+        
+        $data = array();
+        $query = "  SELECT idAnswer, answer, sound ".
+                 "  FROM Optotype_Answer ";
+        
+        $users = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+       
+        while ($line = pg_fetch_array($users, null, PGSQL_ASSOC)) {
+            $data []= array('idAnswer'=>$line['idanswer'],'answer'=>$line['answer'],'sound'=> base64_encode(pg_unescape_bytea($line['sound'])));
+         }   
+            
+     
+        return $data;
+    }*/
+    
+    /*public function getOptotypesByYears($year){
         
         $limit = "16";
         $data = array();
@@ -53,7 +69,7 @@ class OptotypeDB extends PgDataBase{
          }
         
         return $data;
-    }
+    }*/
     
     public function putOptotypesImage (){
         
@@ -83,7 +99,37 @@ class OptotypeDB extends PgDataBase{
             }
             $count ++;
         }
-        
+       // $this->updatedOptotypeAnswer();
     } 
+    
+    /*private function updatedOptotypeAnswer (){
+        
+        $directory="OptotypeSound";
+        $path = ""; 
+        $count = 0;
+        
+        
+        $files = opendir($directory);
+        
+        while ($file = readdir($files)){
+    
+            if ($count >1){
+                $path = $directory."/".$file;
+                $name = explode(".", $file);
+                $bytesFile = file_get_contents($path);
+                $bytesFile = pg_escape_bytea($bytesFile);
+                $query = " UPDATE optotype_answer SET sound = '".$bytesFile.
+                         "' WHERE answer = '".
+                          $name[0]."'";
+                $result = pg_query($query);
+                if($result)
+                    echo 'exito al actualizar'.$name[0]."</br>";
+                else 
+                    echo 'fallo al actualizar'.$name[0]."</br>";
+            }
+            $count ++;
+        }
+        
+    }*/
     
 }

@@ -24,7 +24,7 @@ class OptotypeApi {
             $this->getOptotypes();
             break;     
         case 'POST'://inserta
-            $this->getOptotypesByPost();
+            //$this->getOptotypesAnswer();
             break;                
         case 'PUT'://actualiza
             $this->putOptotypes();
@@ -54,22 +54,18 @@ class OptotypeApi {
        }  
     }
     
-    function getOptotypesByPost(){
+    /*function getOptotypesAnswer(){
         
         if ($_GET['action'] == 'optotypes'){
-           $obj = json_decode( file_get_contents('php://input') );   
-           $objArr = (array)$obj; 
-           if (!empty($objArr)){
                $db = new OptotypeDB();
-               $response = $db->getOptotypesByYears($objArr[0]->year);
+               $response = $db->getOptotypeAnswer();
                echo json_encode($response,JSON_PRETTY_PRINT);
-            }
        }else{
            $this->response(400);
        }  
         
         
-    }
+    }*/
     
     
     function putOptotypes(){

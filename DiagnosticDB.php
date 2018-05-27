@@ -12,7 +12,7 @@ class DiagnosticDB extends PgDataBase {
     
     public function proccessDataDiagnostic(array $obj){
         
-        $responce = "listo para procesar datos";
+        //$responce = "listo para procesar datos";
         
         switch ($obj[0]->action){
             
@@ -22,7 +22,8 @@ class DiagnosticDB extends PgDataBase {
                 break;
             
             case '1':
-                echo "Consultar datos de interacción";
+                //echo "Consultar datos de interacción";
+                $response = $this->readDiagnostic($obj);
                 break;
             
             case '2':
@@ -35,8 +36,48 @@ class DiagnosticDB extends PgDataBase {
   
         }
         
-        return $responce;
+        return $response;
     }
+    
+    
+    private function readDiagnostic(array $obj){
+        
+        $data = array();
+        $query = "( SELECT avr.eyeRight AS eyeRight , avr.eyeLeft AS eyeLeft, sut.Center AS center, sut.Sustain AS sustain, ". 
+                    "    sut.Maintain AS maintain, dir.typeTest as test, to_char(mea.appointmentDate, ". 
+                    "    'dd/mm/yyyy') AS appointmentDate, pat.sex AS sex ". 
+                    " FROM Patient pat, Medical_Appointment mea,Diagnostic_result dir, ". 
+                        " Subjective_Test sut, Av_Result avr ".
+                    " WHERE pat.idPatient = mea.fk_idPatient ".
+                    "    AND mea.idAppointment = dir.fk_Appointment ".
+                    "    AND sut.idSubjective = dir.fk_idSubjective ". 
+                    "    AND avr.idAvResult = dir.fk_idAvResult ".
+                    "    AND dir.typeTest = 'Test Estandar' ".
+                    "    AND pat.idPatient = 1) ".
+                " UNION ".
+                "( SELECT avr.eyeRight AS eyeRight , avr.eyeLeft AS eyeLeft, sut.Center AS center, sut.Sustain AS sustain, ". 
+                    "    sut.Maintain AS maintain, dir.typeTest as test, to_char(mea.appointmentDate, ".
+                    "    'dd/mm/yyyy') AS appointmentDate, pat.sex AS sex ".
+                    " FROM Patient pat, Medical_Appointment mea,Diagnostic_result dir, ". 
+                    "    Subjective_Test sut, Av_Result avr ".
+                    " WHERE pat.idPatient = mea.fk_idPatient ".
+                    "    AND mea.idAppointment = dir.fk_Appointment ".
+                    "    AND sut.idSubjective = dir.fk_idSubjective ".
+                    "    AND avr.idAvResult = dir.fk_idAvResult ".
+                    "    AND dir.typeTest = 'Test Personalizado' ".
+                    "    AND pat.idPatient = 1)";
+        
+        $dataAppointment = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+       
+        while ($line = pg_fetch_array($dataAppointment, null, PGSQL_ASSOC)) {
+            $data []= array('eyeRight'=>$line['eyeright'],'eyeleft'=>$line['eyeleft'],'center'=>$line['center'],'sustain'=>$line['sustain'],'maintain'=>$line['maintain'], 'appointmentdate'=>$line['appointmentdate'], 'gender'=>$line['sex']);
+         }   
+            
+     
+        return $data; 
+        
+    }
+    
     
     private function saveDataDiagnostic(array $obj){
 
