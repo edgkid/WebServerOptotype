@@ -53,7 +53,7 @@ class DiagnosticDB extends PgDataBase {
                     "    AND sut.idSubjective = dir.fk_idSubjective ". 
                     "    AND avr.idAvResult = dir.fk_idAvResult ".
                     "    AND dir.typeTest = 'Test Estandar' ".
-                    "    AND pat.idPatient = 1) ".
+                    "    AND pat.idPatient = ".$obj[0]->idPatient.") ".
                 " UNION ".
                 "( SELECT avr.eyeRight AS eyeRight , avr.eyeLeft AS eyeLeft, sut.Center AS center, sut.Sustain AS sustain, ". 
                     "    sut.Maintain AS maintain, dir.typeTest as test, to_char(mea.appointmentDate, ".
@@ -65,12 +65,12 @@ class DiagnosticDB extends PgDataBase {
                     "    AND sut.idSubjective = dir.fk_idSubjective ".
                     "    AND avr.idAvResult = dir.fk_idAvResult ".
                     "    AND dir.typeTest = 'Test Personalizado' ".
-                    "    AND pat.idPatient = 1)";
+                    "    AND pat.idPatient = ".$obj[0]->idPatient.")";
         
         $dataAppointment = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
        
         while ($line = pg_fetch_array($dataAppointment, null, PGSQL_ASSOC)) {
-            $data []= array('eyeRight'=>$line['eyeright'],'eyeleft'=>$line['eyeleft'],'center'=>$line['center'],'sustain'=>$line['sustain'],'maintain'=>$line['maintain'], 'appointmentdate'=>$line['appointmentdate'], 'gender'=>$line['sex']);
+            $data []= array('eyeRight'=>$line['eyeright'],'eyeleft'=>$line['eyeleft'],'center'=>$line['center'],'sustain'=>$line['sustain'],'maintain'=>$line['maintain'], 'appointmentdate'=>$line['appointmentdate'], 'gender'=>$line['sex'], 'typeTest'=> $line['test']);
          }   
             
      

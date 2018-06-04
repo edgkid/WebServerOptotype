@@ -71,6 +71,8 @@ class AppointmentDB extends PgDataBase{
         $query = $query." VALUES (".$this->getNewId().",'".$obj[0]->appointmentDate."','".$obj[0]->status."',";
         $query = $query.$obj[0]->idPatient."); commit;";
         
+        echo $query;
+        
         $result = pg_query($query);
         
         if ($result)
@@ -82,11 +84,11 @@ class AppointmentDB extends PgDataBase{
     
     function getNewId (){
         
-        $query ="Select Max(idAppointment) from Medical_Appointment";
+        $query ="Select (Max(idAppointment) + 1) from Medical_Appointment";
         $result = pg_query($query);
         
         if ($row = pg_fetch_row($result)) {
-            $value = $row[0] +1; 
+            $value = $row[0]; 
         }
         return $value;
     }

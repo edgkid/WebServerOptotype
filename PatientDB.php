@@ -74,21 +74,6 @@ class PatientDB extends PgDataBase {
     public function getSomePatient(array $obj){
         
         $data = array();
-        /*$query =" SELECT pa.idPatient as idPatient, pa.firstName as firstName, pa.lastName as lastName,". 
-                "        pa.middleName as middleName, pa.maidenName as maidenName,".
-		"       (extract(year from  current_timestamp) - extract(year from pa.birthDay)) as yearsOld,".
-                "        pa.photo as image".
-                " FROM Patient pa, Medical_Appointment ma".
-                " WHERE pa.idPatient = ma.fk_idPatient".
-                "       AND (Lower(pa.firstName) LIKE Lower('%".$obj[0]->patient."%')".
-                "            OR Lower(pa.LastName) LIKE Lower('%".$obj[0]->patient."%')".
-                "            OR Lower(pa.MiddleName) LIKE Lower('%".$obj[0]->patient."%')".
-                "            OR Lower(pa.MaidenName) LIKE Lower('%".$obj[0]->patient."%'))".
-                "       AND ma.appointmentdate= (SELECT max (appointmentdate) FROM Medical_Appointment)";
-        
-        echo $query;*/
-        
-        
         $query = "  SELECT pa.idPatient as idPatient, pa.firstName as firstName, pa.lastName as lastName,". 
                 "       pa.middleName as middleName, pa.maidenName as maidenName,".
                 "        (extract(year from  current_timestamp) - extract(year from pa.birthDay)) as yearsOld,".
