@@ -352,7 +352,7 @@ class TestDB extends PgDataBase{
         // DElete elementos en la carpetas optometric y rows
         $this->deleteImageElementOnServer("OptometricCard");
         $this->deleteImageElementOnServer("rowsBase");
-
+        
         return $response;
     }
     
