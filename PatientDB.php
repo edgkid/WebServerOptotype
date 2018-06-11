@@ -24,7 +24,7 @@ class PatientDB extends PgDataBase {
         switch ($obj[0]->action){
             
             case '0':
-                echo "create";
+                $this->savePatient($obj);
                 break;
             
             case '1':
@@ -132,5 +132,57 @@ class PatientDB extends PgDataBase {
         }
         
     } 
+    
+    public function savePatient(array $obj){
+        
+        if ($obj[0]->photo != null || $obj[0]->photo != ""){
+            
+            $directory="kids/";
+            $fileName =$obj[0]->firstName.$obj[0]->secondName.$obj[0]->firstLastName.$obj[0]->secondLastName.".png";
+            $baseDecode = base64_decode($obj[0]->photo);
+            file_put_contents($fileName, $baseDecode);
+            $path = $directory.$fileName;
+            $bytesFile = file_put_contents($path, $baseDecode);
+
+            $bytePhoto = file_get_contents($path);
+            $bytePhoto = pg_escape_bytea($bytesFile);
+            
+            $bytePhoto = "'".$bytePhoto."'";
+            
+        }else{
+            $bytePhoto = "null";
+        }
+        
+        
+        $query = "INSERT INTO patient (idPatient, firstName, middleName, lastName, maidenName, sex, birthday, photo, fk_idUser)".
+                " VALUES (".
+                $this->getNewId().",".
+                "'".$obj[0]->firstName."',".
+                "'".$obj[0]->secondName."',".
+                "'".$obj[0]->firstLastName."',".
+                "'".$obj[0]->secondLastName."',".
+                "'".$obj[0]->gender."',".
+                "'".$obj[0]->birthday."',".
+                $bytePhoto.",".
+                $obj[0]->fk_user.
+                ")";
+
+        $result = pg_query($query);
+        
+        if($result)
+           echo 'exito al actualizar'.$name[0]."</br>";
+       
+    }
+    
+    function getNewId (){
+        
+        $query ="Select (Max(idPatient) + 1) from Patient";
+        $result = pg_query($query);
+        
+        if ($row = pg_fetch_row($result)) {
+            $value = $row[0]; 
+        }
+        return $value;
+    }
     
 }
