@@ -6,6 +6,7 @@
  * and open the template in the editor.
  */
 require_once 'PgDataBase.php';
+require_once 'AppointmentDB.php';
 /**
  * Description of PatientDB
  *
@@ -153,10 +154,10 @@ class PatientDB extends PgDataBase {
             $bytePhoto = "null";
         }
         
-        
+        $idPatient = $this->getNewId();
         $query = "INSERT INTO patient (idPatient, firstName, middleName, lastName, maidenName, sex, birthday, photo, fk_idUser)".
                 " VALUES (".
-                $this->getNewId().",".
+                $idPatient.",".
                 "'".$obj[0]->firstName."',".
                 "'".$obj[0]->secondName."',".
                 "'".$obj[0]->firstLastName."',".
@@ -169,8 +170,18 @@ class PatientDB extends PgDataBase {
 
         $result = pg_query($query);
         
-        if($result)
-           echo 'exito al actualizar'.$name[0]."</br>";
+        if($result){
+            if ($obj[0]->action == "0"){
+                $appoitnmet = new AppointmentDB();
+                $idAppointment = $appoitnmet->getNewId();
+                $query = "INSERT INTO Medical_Appointment (idappointment,appointmentDate, status, fk_IdPatient)";
+                $query = $query." VALUES (".$idAppointment.",'".$obj[0]->nextAppointment."','N',";
+                $query = $query.$idPatient."); commit;";
+                
+                $result = pg_query($query);
+            }
+        }
+           
        
     }
     
