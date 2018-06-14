@@ -434,13 +434,13 @@ class DiagnosticDB extends PgDataBase {
         }else{
             $query = $query."null,";
         }
-        $query = $query.$antecedent.",".$sigValue.")";
+        $query = $query.$antValue.",".$sigValue.")";
         
         $query = $query."; commit; ";
 
-        //$result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
         
-       echo $query;
+       //echo $query;
         
     }
     
