@@ -405,7 +405,8 @@ class DiagnosticDB extends PgDataBase {
         $query = "INSERT INTO REPOSITORY_DIAGNOSTIC (repositoryYears, repositorySex, respositoryCenter,";
         $query = $query."repositorySustain, repositorymaintain, repositoryAvRigth, repositoryAvLeft,";
         $query = $query."repositoryColaborated, repositoryTypeTest, repositoryDate, ortoforia, ortotropia,";
-        $query = $query."foria, endoforia, exoforia, dvd, caElevada, tonometriaOd, tonometriaOi, crhomaticOd, crhomaticOi)";
+        $query = $query."foria, endoforia, exoforia, dvd, caElevada, tonometriaOd, tonometriaOi, crhomaticOd, crhomaticOi,";
+        $query = $query."fk_defect,fk_signalDefect)";
         $query = $query."VALUES (".$obj[0]->yearsOld.",'".$obj[0]->gender."','".$obj[0]->center."','";
         $query = $query.$obj[0]->sustain."','".$obj[0]->maintain."','".$obj[0]->avRigth."','".$obj[0]->avLeft."','";
         $query = $query.$obj[0]->colaboratedGrade."','".$obj[0]->typeTest."','".$today."','";
@@ -431,9 +432,10 @@ class DiagnosticDB extends PgDataBase {
         if ($obj[0]->crhomaticOi != ""){
             $query = $query.$obj[0]->crhomaticOi.",";
         }else{
-            $query = $query."null)";
+            $query = $query."null,";
         }
-
+        $query = $query.$antecedent.",".$sigValue.")";
+        
         $query = $query."; commit; ";
 
         //$result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
