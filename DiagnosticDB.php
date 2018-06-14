@@ -13,7 +13,7 @@ class DiagnosticDB extends PgDataBase {
     public function proccessDataDiagnostic(array $obj){
         
         //$responce = "listo para procesar datos";
-        
+        $response = '';
         switch ($obj[0]->action){
             
             case '0':
@@ -94,15 +94,18 @@ class DiagnosticDB extends PgDataBase {
            $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antacedentDad, 'M');
         }
         
-        if ($obj[0]->antacedentDad){
+        if ($obj[0]->antacedentDad != ""){
           $this->saveDataDiagnosticAntecedentRegister($diagnostic, $obj);
           $this->saveDataDiagnosticAntecedentRoll($diagnostic, $obj, $obj[0]->antecedentMon, 'F');
-        }        
+        }       
         
-        $this->saveDataDiagnosticSubjectiveTest($diagnostic, $obj);
+        /*$this->saveDataDiagnosticSubjectiveTest($diagnostic, $obj);
         $this->saveDataDiagnosticObjectiveTets($diagnostic, $obj);
-        $this->saveDataDiagnosticResult($diagnostic, $obj);
+        $this->saveDataOtherTest($diagnostic, $obj);
+        $this->saveDataDiagnosticResult($diagnostic, $obj);*/
         $this->saveDataDiagnosticOnRepository($diagnostic, $obj);
+        
+        
     }
     
     private function getAId ($query, $tableNanme, $whereClausule){
@@ -265,6 +268,54 @@ class DiagnosticDB extends PgDataBase {
         
     }
     
+    private function saveDataOtherTest(Diagnostic $diagnostic, array $obj){
+        
+        $idTable="idOtherTest";
+        $whereClausule = "";
+        $query = " INSERT INTO OTHER_TEST (ortoforia, ortotropia, foria, "
+                                           ."endoforia, exoforia, dvd, caElevada,"
+                                           ."tonometriaOd, tonometriaOi, CrhomaticOd,"
+                                           ."crhomaticOi) VALUES ("
+                    ."'".$obj[0]->ortoforia."','".$obj[0]->ortotropia."','"
+                    .$obj[0]->foria."','".$obj[0]->endoforia."','".$obj[0]->exoforia
+                    ."','".$obj[0]->dvd."','".$obj[0]->caElevada."',";
+        
+        if ($obj[0]->tonometriaOd != ""){
+            $query = $query.$obj[0]->tonometriaOd.",";
+        }else{
+            $query = $query."null,";
+        }
+        if ($obj[0]->tonometriaOi != ""){
+            $query = $query.$obj[0]->tonometriaOi.",";
+        }else{
+            $query = $query."null,";
+        }
+        if ($obj[0]->crhomaticOd != ""){
+            $query = $query.$obj[0]->crhomaticOd.",";
+        }else{
+            $query = $query."null,";
+        }
+        
+        if ($obj[0]->crhomaticOi != ""){
+            $query = $query.$obj[0]->crhomaticOi.",";
+        }else{
+            $query = $query."null)";
+        }
+            
+        $query = $query."; Commit; ";
+        
+        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+        if($result){
+            $query = " Select max (".$idTable.") from ";
+            $tableName = " OTHER_TEST ";
+            $diagnostic->setIdOtherTest($this->getAId($query, $tableName, $whereClausule));
+        }
+        
+        
+        
+    }       
+    
     private function saveDataDiagnosticResult (Diagnostic $diagnostic, array $obj){
         
         $appointment = "(   SELECT idAppointment 
@@ -353,15 +404,41 @@ class DiagnosticDB extends PgDataBase {
         
         $query = "INSERT INTO REPOSITORY_DIAGNOSTIC (repositoryYears, repositorySex, respositoryCenter,";
         $query = $query."repositorySustain, repositorymaintain, repositoryAvRigth, repositoryAvLeft,";
-        $query = $query."repositoryColaborated, repositoryTypeTest, repositoryDate, fk_defect, fk_signalDefect) ";
+        $query = $query."repositoryColaborated, repositoryTypeTest, repositoryDate, ortoforia, ortotropia,";
+        $query = $query."foria, endoforia, exoforia, dvd, caElevada, tonometriaOd, tonometriaOi, crhomaticOd, crhomaticOi)";
         $query = $query."VALUES (".$obj[0]->yearsOld.",'".$obj[0]->gender."','".$obj[0]->center."','";
         $query = $query.$obj[0]->sustain."','".$obj[0]->maintain."','".$obj[0]->avRigth."','".$obj[0]->avLeft."','";
-        $query = $query.$obj[0]->colaboratedGrade."','".$obj[0]->typeTest."','".$today."',".$antValue.",";
-        $query = $query.$sigValue."); commit;";
+        $query = $query.$obj[0]->colaboratedGrade."','".$obj[0]->typeTest."','".$today."','";
+        $query = $query.$obj[0]->ortoforia."','".$obj[0]->ortotropia."','".$obj[0]->foria."','".$obj[0]->endoforia."','";
+        $query = $query.$obj[0]->exoforia."','".$obj[0]->dvd."','".$obj[0]->caElevada."',";
         
-        $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        if ($obj[0]->tonometriaOd != ""){
+            $query = $query.$obj[0]->tonometriaOd.",";
+        }else{
+            $query = $query."null,";
+        }
+        if ($obj[0]->tonometriaOi != ""){
+            $query = $query.$obj[0]->tonometriaOi.",";
+        }else{
+            $query = $query."null,";
+        }
+        if ($obj[0]->crhomaticOd != ""){
+            $query = $query.$obj[0]->crhomaticOd.",";
+        }else{
+            $query = $query."null,";
+        }
         
-       
+        if ($obj[0]->crhomaticOi != ""){
+            $query = $query.$obj[0]->crhomaticOi.",";
+        }else{
+            $query = $query."null)";
+        }
+
+        $query = $query."; commit; ";
+
+        //$result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+        
+       echo $query;
         
     }
     
