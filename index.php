@@ -1,5 +1,11 @@
 <?php
-    require_once 'UserApi.php';
+
+    require_once 'ReceiveRequest.php';
+
+    $receiveRequest = new ReceiveRequest($_GET['action']);
+    $receiveRequest->answerToRequested();
+    
+    /*require_once 'UserApi.php';
     require_once 'PatientApi.php';
     require_once 'OptotypeApi.php';
     require_once 'TestApi.php';
@@ -7,9 +13,9 @@
     require_once 'AvResultApi.php';
     require_once 'DiagnosticApi.php';
     require_once 'ChromaticDefectApi.php';
-    require_once 'OpticalDefectApi.php';
+    require_once 'OpticalDefectApi.php';*/
     
-    if ($_GET['action'] == 'updateKids'){
+    /*if ($_GET['action'] == 'updateKids'){
         $update = new PatientApi();
         $update->API();
     }
@@ -66,4 +72,4 @@
         $opticalDefectApi = new OpticalDefectApi();
         $opticalDefectApi->API();
         
-    }
+    }*/
