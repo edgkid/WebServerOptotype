@@ -224,7 +224,7 @@ class TestDB extends PgDataBase{
         
         $data = array();
         $dataTest = array();
-        $directory = "rowsBase";
+        $directory = "src/rowsBase";
         $path = ""; 
         $count = 0;
         $row = 1;
@@ -350,8 +350,8 @@ class TestDB extends PgDataBase{
 
         $response = $this->getSummaryTestByCode($testCode);
         // DElete elementos en la carpetas optometric y rows
-        $this->deleteImageElementOnServer("OptometricCard");
-        $this->deleteImageElementOnServer("rowsBase");
+        $this->deleteImageElementOnServer("src/OptometricCard");
+        $this->deleteImageElementOnServer("src/rowsBase");
         
         return $response;
     }

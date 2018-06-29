@@ -22,10 +22,10 @@ class Canvas {
      function __construct($with, $height, $avPixels, $testCode) {
          $this->idList =  array('uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once');
          $this->AvList = array('Av1','Av2','Av3','Av4','Av5','Av6','Av7','Av8','Av9','Av10','Av11');
-         $this->imagePath = "C:/xampp/htdocs/WSOptotype/OptometricCard/";
-         $this->elementsPath = "C:/xampp/htdocs/WSOptotype/OptotypeForCard/";
-         $this->imagebasePath = "C:/xampp/htdocs/WSOptotype/BaseCarta/";
-         $this->rowsPath = "C:/xampp/htdocs/WSOptotype/rowsBase/";
+         $this->imagePath = "C:/xampp/htdocs/WSOptotype/src/OptometricCard/";
+         $this->elementsPath = "C:/xampp/htdocs/WSOptotype/src/OptotypeForCard/";
+         $this->imagebasePath = "C:/xampp/htdocs/WSOptotype/src/BaseCarta/";
+         $this->rowsPath = "C:/xampp/htdocs/WSOptotype/src/rowsBase/";
          $this->avPixels = $avPixels;
          $this->with = $with;
          $this->height = $height;

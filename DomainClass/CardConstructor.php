@@ -31,9 +31,9 @@ class CardConstructor {
        $this->xPosition = 0;
        $this->yPosition = 10;
        $this->testCode = $testCode;
-       $this->canvasPath = "C:/xampp/htdocs/WSOptotype/OptometricCard/";
-       $this->optotypesPath = "C:/xampp/htdocs/WSOptotype/OptotypeForCard/";
-       $this->rowsPath = "C:/xampp/htdocs/WSOptotype/rowsBase/";       
+       $this->canvasPath = "C:/xampp/htdocs/WSOptotype/src/OptometricCard/";
+       $this->optotypesPath = "C:/xampp/htdocs/WSOptotype/src/OptotypeForCard/";
+       $this->rowsPath = "C:/xampp/htdocs/WSOptotype/src/rowsBase/";       
    }
    
    function setXPosition($xPosition) {
