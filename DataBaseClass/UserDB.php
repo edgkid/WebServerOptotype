@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once 'PgDataBase.php';
+require_once 'DataBaseClass/PgDataBase.php';
 /**
  * Description of UserDB
  *

@@ -1,12 +1,12 @@
 <?php
 
-require_once 'PgDataBase.php';
+require_once 'DataBaseClass/PgDataBase.php';
 
-require_once 'ParameterForCard.php';
-require_once 'PrintSize.php';
-require_once 'ImageSize.php';
-require_once 'Canvas.php';
-require_once 'CardConstructor.php';
+require_once 'DomainClass/ParameterForCard.php';
+require_once 'DomainClass/PrintSize.php';
+require_once 'DomainClass/ImageSize.php';
+require_once 'DomainClass/Canvas.php';
+require_once 'DomainClass/CardConstructor.php';
 
 
 class TestDB extends PgDataBase{

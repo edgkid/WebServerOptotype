@@ -1,14 +1,14 @@
 <?php
 
-require_once 'UserApi.php';
-require_once 'PatientApi.php';
-require_once 'OptotypeApi.php';
-require_once 'TestApi.php';
-require_once 'AppointmentApi.php';
-require_once 'AvResultApi.php';
-require_once 'DiagnosticApi.php';
-require_once 'ChromaticDefectApi.php';
-require_once 'OpticalDefectApi.php';
+require_once 'ApiClass/UserApi.php';
+require_once 'ApiClass/PatientApi.php';
+require_once 'ApiClass/OptotypeApi.php';
+require_once 'ApiClass/TestApi.php';
+require_once 'ApiClass/AppointmentApi.php';
+require_once 'ApiClass/AvResultApi.php';
+require_once 'ApiClass/DiagnosticApi.php';
+require_once 'ApiClass/ChromaticDefectApi.php';
+require_once 'ApiClass/OpticalDefectApi.php';
 
 /*
  * To change this license header, choose License Headers in Project Properties.

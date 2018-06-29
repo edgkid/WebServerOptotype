@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-require_once 'OptotypeDb.php';
+require_once 'DataBaseClass/OptotypeDb.php';
 /**
  * Description of OptotypeApi
  *

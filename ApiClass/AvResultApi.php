@@ -1,6 +1,6 @@
 <?php
 
-require_once 'AvResultDB.php';
+require_once 'DataBaseClass/AvResultDB.php';
 /**
  * Description of AvResultApi
  *

@@ -1,5 +1,5 @@
 <?php
-require_once 'PgDataBase.php';
+require_once 'DataBaseClass/PgDataBase.php';
 /**
  * Description of AvResultDB
  *

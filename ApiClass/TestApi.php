@@ -1,6 +1,6 @@
 <?php
 
-require_once 'TestDB.php';
+require_once 'DataBaseClass/TestDB.php';
 //require_once 'OptometricTest.php';
 
 class TestApi{

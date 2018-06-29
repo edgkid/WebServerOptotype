@@ -1,7 +1,7 @@
 <?php
 
 //require_once 'PgDataBase.php';
-require_once 'Diagnostic.php';
+require_once 'DomainClass/Diagnostic.php';
 /**
  * Description of DiagnosticDB
  *

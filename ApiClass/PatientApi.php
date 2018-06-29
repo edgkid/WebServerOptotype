@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once 'PatientDB.php';
+require_once 'DataBaseClass/PatientDB.php';
 /**
  * Description of PatientApi
  *

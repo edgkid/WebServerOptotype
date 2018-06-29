@@ -1,6 +1,6 @@
 <?php
 
-require_once 'AppointmentDB.php';
+require_once 'DataBaseClass/AppointmentDB.php';
 
 class AppointmentApi {
     

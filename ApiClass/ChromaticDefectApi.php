@@ -1,5 +1,5 @@
 <?php
-require_once 'ChromaticDefectDB.php';
+require_once 'DataBaseClass/ChromaticDefectDB.php';
 /**
  * Description of ChromaticDefect
  *

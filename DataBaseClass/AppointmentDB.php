@@ -1,6 +1,6 @@
 <?php
 
-require_once 'PgDataBase.php';
+require_once 'DataBaseClass/PgDataBase.php';
 
 class AppointmentDB extends PgDataBase{
     

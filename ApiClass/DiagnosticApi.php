@@ -1,12 +1,11 @@
 <?php
-
-require_once 'OpticalDefectDB.php';
+require_once 'DataBaseClass/DiagnosticDB.php';
 /**
- * Description of OpticalDefectApi
+ * Description of DiagnosticApi
  *
  * @author Edgar
  */
-class OpticalDefectApi {
+class DiagnosticApi {
     
     Public function API(){
         
@@ -14,10 +13,10 @@ class OpticalDefectApi {
         $method = $_SERVER['REQUEST_METHOD'];
         switch ($method) {
         case 'GET'://consulta
-            $this->getOpticalDefect();
+            echo 'get';
             break;     
         case 'POST'://inserta
-            echo'post';
+            $this->proccessDiagnostic();
             break;                
         case 'PUT'://actualiza
             echo 'put';
@@ -31,16 +30,30 @@ class OpticalDefectApi {
         }
     }
     
-    function getOpticalDefect(){
-       if ($_GET['action'] == 'signalDefect'){
-           $db = new OpticalDefectDB();
-           $response = $db->getOpticalDefect();
-           echo json_encode($response,JSON_PRETTY_PRINT);
-       }else{
+    public function proccessDiagnostic (){
+        
+        if ($_GET['action'] == 'diagnostic'){
+            
+            $obj = json_decode( file_get_contents('php://input') );   
+            $objArr = (array)$obj;
+            
+            if (!empty($objArr)){
+                $diagnosticDb = new DiagnosticDB();
+                $response = $diagnosticDb->proccessDataDiagnostic($objArr);
+                echo json_encode($response,JSON_PRETTY_PRINT);
+            }
+        }else{
            $this->response(400);
-       }  
-    }
+        }
+        
+    } 
     
+     /**
+    * Respuesta al cliente
+    * @param int $code Codigo de respuesta HTTP
+    * @param String $status indica el estado de la respuesta puede ser "success" o "error"
+    * @param String $message Descripcion de lo ocurrido
+    */
     function response($code=200, $status="", $message="") {
        http_response_code($code);
        if( !empty($status) && !empty($message) ){
