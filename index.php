@@ -1,6 +1,6 @@
 <?php
 
-    require_once 'ReceiveRequest.php';
+    require_once 'DomainClass/ReceiveRequest.php';
 
     $receiveRequest = new ReceiveRequest($_GET['action']);
     $receiveRequest->answerToRequested();
