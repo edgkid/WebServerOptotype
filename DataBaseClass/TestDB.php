@@ -136,7 +136,7 @@ class TestDB extends PgDataBase{
     
     private function saveNewTest($testCode){
         
-        $directory="OptometricCard";
+        $directory="src/OptometricCard";
         $path = ""; 
         $count = 0;
         
@@ -234,13 +234,12 @@ class TestDB extends PgDataBase{
                 "   WHERE summaryCode = '".$testCode."'";
         
         $patient = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
-       
+
         while ($line = pg_fetch_array($patient, null, PGSQL_ASSOC)) {
             $data []= array('idSummary'=>$line['idsummary'],'summaryCode'=>$line['summarycode'],'imageTest'=> base64_encode(pg_unescape_bytea($line['imagetest'])));
         }
         
         $files = opendir($directory);
-        
         while ($file = readdir($files)){
     
             if ($count >1){
@@ -350,6 +349,7 @@ class TestDB extends PgDataBase{
 
         $response = $this->getSummaryTestByCode($testCode);
         // DElete elementos en la carpetas optometric y rows
+        
         $this->deleteImageElementOnServer("src/OptometricCard");
         $this->deleteImageElementOnServer("src/rowsBase");
         

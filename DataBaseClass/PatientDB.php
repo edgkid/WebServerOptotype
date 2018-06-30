@@ -105,7 +105,7 @@ class PatientDB extends PgDataBase {
     
     public function putPatientsImage (){
         
-        $directory="kids";
+        $directory="src/kids";
         $path = ""; 
         $count = 0;
         

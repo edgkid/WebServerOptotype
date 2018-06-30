@@ -73,7 +73,7 @@ class OptotypeDB extends PgDataBase{
     
     public function putOptotypesImage (){
         
-        $directory="optotypesImage";
+        $directory="src/optotypesImage";
         $path = ""; 
         $count = 0;
         
